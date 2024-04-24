@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ScreenController;
@@ -30,8 +31,7 @@ Route::resource('movies', MovieController::class);
 Route::resource('theaters', TheaterController::class);
 Route::resource('screens', ScreenController::class);
 Route::resource('showtimes', controller: ShowtimeController::class);
-
-
+Route::resource('bookings', controller: BookingController::class);
 
 
 

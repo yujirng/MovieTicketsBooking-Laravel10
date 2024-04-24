@@ -1,53 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Genres</h1>
+    <h1>Bookings</h1>
 
-    <form action="{{ route('genres.index') }}" method="GET">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" name="search" value="{{ request()->get('search') }}">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
-            </div>
-        </div>
-    </form>
-
-    <a href="{{ route('genres.create') }}" class="btn btn-primary mb-3">Create New Genre</a>
-
-    @if ($genres->count() > 0)
-        <table class="table table-striped">
-            <thead>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Seats</th>
+                <th>Total Seats</th>
+                <th>Booking Date</th>
+                <th>Showtime</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($bookings as $booking)
                 <tr>
-                    <th>ID</th>
-                    <th>Genre Name</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th>Actions</th>
+                    <td>{{ $booking->id }}</td>
+                    <td>{{ $booking->user->name }}</td>
+                    <td>{{ $booking->seats }}</td>
+                    <td>{{ $booking->total_seats }}</td>
+                    {{-- <td>{{ $booking->booking_date->format('Y-m-d') }}</td> --}}
+                    <td>{{ FunctionHelper::convertDate($booking->booking_date) }}</td>
+                    <td>{{ FunctionHelper::formatDateAndTimeFull($booking->showtime->showtime) }}</td>
+                    <td>{{ $booking->total_price }}</td>
+                    <td>
+                        <a href="{{ route('bookings.show', $booking) }}" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ route('bookings.edit', $booking) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route('bookings.destroy', $booking) }}" method="post" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($genres as $genre)
-                    <tr>
-                        <td>{{ $genre->id }}</td>
-                        <td>{{ $genre->genre_name }}</td>
-                        <td>{{ $genre->created_at }}</td>
-                        <td>{{ $genre->updated_at }}</td>
-                        <td>
-                            <a href="{{ route('genres.show', $genre->id) }}" class="btn btn-sm btn-info">Show</a>
-                            <a href="{{ route('genres.edit', $genre->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            {{-- <form method="POST" action="{{ route('genres.destroy', $genre->id) }}" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form> --}}
-                            <a href="{{ route('genres.delete', $genre->id) }}" class="btn btn-sm btn-danger">Delete</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $genres->links() }}
-    @else
-        <p>No genres found.</p>
-    @endif
+            @endforeach
+        </tbody>
+    </table>
+    <a href="{{ route('bookings.create') }}" class="btn btn-primary">Create Booking</a>
 @endsection
