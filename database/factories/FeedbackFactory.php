@@ -18,6 +18,9 @@ class FeedbackFactory extends Factory
     {
         return [
             //
+            'name' => $this->faker->name,
+            'email' => $this->faker->safeEmail,
+            'message' => $this->faker->sentence,
         ];
     }
 }

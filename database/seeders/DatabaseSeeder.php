@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Http\Controllers\UserController;
+use App\Models\Feedback;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
@@ -19,11 +22,14 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        // User::factory()->count(10)->create();
 
         $this->call([
             GenresSeeder::class,
-            MovieSeeder::class
+            MovieSeeder::class,
+            TheaterSeeder::class,
+            ScreenSeeder::class,
+            FeedbackSeeder::class,
+            UserSeeder::class
         ]);
     }
 }

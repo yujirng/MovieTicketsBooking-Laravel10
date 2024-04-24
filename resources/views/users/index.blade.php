@@ -1,53 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Genres</h1>
+    <h1>Users</h1>
 
-    <form action="{{ route('genres.index') }}" method="GET">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" name="search" value="{{ request()->get('search') }}">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
-            </div>
-        </div>
-    </form>
+    {{-- @can('create-user') --}}
+        <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Create New User</a>
+    {{-- @endcan --}}
 
-    <a href="{{ route('genres.create') }}" class="btn btn-primary mb-3">Create New Genre</a>
-
-    @if ($genres->count() > 0)
-        <table class="table table-striped">
-            <thead>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Birthday</th>
+                <th>Gender</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($users as $user)
                 <tr>
-                    <th>ID</th>
-                    <th>Genre Name</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($genres as $genre)
-                    <tr>
-                        <td>{{ $genre->id }}</td>
-                        <td>{{ $genre->genre_name }}</td>
-                        <td>{{ $genre->created_at }}</td>
-                        <td>{{ $genre->updated_at }}</td>
-                        <td>
-                            <a href="{{ route('genres.show', $genre->id) }}" class="btn btn-sm btn-info">Show</a>
-                            <a href="{{ route('genres.edit', $genre->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            {{-- <form method="POST" action="{{ route('genres.destroy', $genre->id) }}" class="d-inline">
-                                @csrf
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->username }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->phone }}</td>
+                    <td>{{ $user->birthday }}</td>
+                    <td>{{ $user->gender ? 'Male' : 'Female' }}</td>
+                    <td>
+                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-primary">Show</a>
+                        {{-- @can('edit-user', $user) --}}
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Edit</a>
+                        {{-- @endcan --}}
+                        {{-- @can('delete-user', $user) --}}
+                            <form method="POST" action="{{ route('users.destroy', $user->id) }}" class="d-inline">
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form> --}}
-                            <a href="{{ route('genres.delete', $genre->id) }}" class="btn btn-sm btn-danger">Delete</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $genres->links() }}
-    @else
-        <p>No genres found.</p>
-    @endif
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        {{-- @endcan --}}
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection

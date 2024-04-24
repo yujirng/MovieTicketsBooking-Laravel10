@@ -1,26 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Show Genre</h1>
+    <h1>User Details</h1>
 
     <div class="card">
         <div class="card-header">
-            {{ $genre->genre_name }}
+            {{ $user->name }}
         </div>
         <div class="card-body">
-            <p><strong>ID:</strong> {{ $genre->id }}</p>
-            <p><strong>Genre Name:</strong> {{ $genre->genre_name }}</p>
-            <p><strong>Created At:</strong> {{ $genre->created_at }}</p>
-            <p><strong>Updated At:</strong> {{ $genre->updated_at }}</p>
-        </div>
-        <div class="card-footer">
-            <a href="{{ route('genres.index') }}" class="btn btn-secondary">Back to List</a>
-            <a href="{{ route('genres.edit', $genre->id) }}" class="btn btn-warning">Edit</a>
-            <form method="POST" action="{{ route('genres.destroy', $genre->id) }}" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+            <ul>
+                <li>Email: {{ $user->email }}</li>
+                <li>Phone: {{ $user->phone }}</li>
+                <li>Birthday: {{ $user->birthday }}</li>
+                <li>Gender: {{ $user->gender ? 'Male' : 'Female' }}</li>
+            </ul>
         </div>
     </div>
+
+    {{-- @can('edit-user', $user)
+        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Edit</a>
+    @endcan --}}
+
+    {{-- @can('delete-user', $user) --}}
+        <form method="POST" action="{{ route('users.destroy', $user->id) }}" class="d-inline">
+            @method('DELETE')
+            @csrf
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    {{-- @endcan --}}
 @endsection

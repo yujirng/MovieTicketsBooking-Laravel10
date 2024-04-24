@@ -5,62 +5,37 @@ namespace App\Http\Controllers;
 use App\Models\Feedback;
 use App\Http\Requests\StoreFeedbackRequest;
 use App\Http\Requests\UpdateFeedbackRequest;
+use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $feedbacks = Feedback::all();
+        return view('feedbacks.index', compact('feedbacks'));
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function store(StoreFeedbackRequest $request)
+    public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Feedback $feedback)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Feedback $feedback)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateFeedbackRequest $request, Feedback $feedback)
-    {
-        //
+        $feedback = Feedback::create($request->all());
+        return redirect()->route('feedbacks.index')->with('success', 'Feedback submitted successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Feedback  $feedback
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Feedback $feedback)
     {
-        //
+        $feedback->delete();
+        return redirect()->route('feedbacks.index')->with('success', 'Feedback deleted successfully!');
     }
 }

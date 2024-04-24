@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Genre;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class MovieFactory extends Factory
             'title' => $this->faker->sentence,
             'director' => $this->faker->name,
             'release_date' => $this->faker->date,
-            'genre_id' => rand(1, 10),
+            'genre_id' => Genre::factory()->create()->id,
             'language' => $this->faker->languageCode,
             'trailer_link' => $this->faker->url,
             'description' => $this->faker->paragraph,

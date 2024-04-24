@@ -1,29 +1,42 @@
-public function index()
-    {
-        $feedbacks = Feedback::all();
-        return view('feedbacks.index', compact('feedbacks'));
-    }
+@extends('layouts.app')
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $feedback = Feedback::create($request->all());
-        return redirect()->route('feedbacks.index')->with('success', 'Feedback submitted successfully!');
-    }
+@section('content')
+    <h1>Feedbacks</h1>
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Feedback  $feedback
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Feedback $feedback)
-    {
-        $feedback->delete();
-        return redirect()->route('feedbacks.index')->with('success', 'Feedback deleted successfully!');
-    }
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($feedbacks as $feedback)
+                <tr>
+                    <td>{{ $feedback->id }}</td>
+                    <td>{{ $feedback->name }}</td>
+                    <td>{{ $feedback->email }}</td>
+                    <td>{{ $feedback->message }}</td>
+                    <td>{{ $feedback->created_at->format('Y-m-d H:i:s') }}</td>
+                    <td>
+                         <form method="POST" action="{{ route('feedbacks.destroy', ['feedback' => $feedback->id]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@endsection
