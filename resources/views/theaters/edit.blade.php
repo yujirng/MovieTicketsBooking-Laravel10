@@ -1,18 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Edit Genre</h1>
+    <h1>Edit Theater</h1>
 
-    <form method="POST" action="{{ route('genres.update', $genre->id) }}">
-    @csrf
-    @method('PUT')
-    <div class="form-group">
-        <label for="genre_name">Genre Name:</label>
-        <input type="text" class="form-control" id="genre_name" name="genre_name" value="{{ $genre->genre_name }}">
-        @error('genre_name')
-            <div class="text-danger">{{ $message }}</div>
-        @enderror
-    </div>
-    <button type="submit" class="btn btn-primary">Update</button>
-</form>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('theaters.update', $theater) }}">
+        @csrf
+        @method('PUT')
+        <div class="form-group">
+            <label for="theaterName">Theater Name:</label>
+            <input type="text" class="form-control" id="theaterName" name="theater_name" value="{{ $theater->theater_name }}">
+        </div>
+        <div class="form-group">
+            <label for="theaterAddress">Theater Address:</label>
+            <input type="text" class="form-control" id="theaterAddress" name="theater_address" value="{{ $theater->theater_address }}">
+        </div>
+        <div class="form-group">
+            <label for="theaterPhone">Theater Phone:</label>
+            <input type="text" class="form-control" id="theaterPhone" name="theater_phone" value="{{ $theater->theater_phone }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Theater</button>
+    </form>
 @endsection

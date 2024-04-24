@@ -23,7 +23,7 @@
                 <tr>
                     <td>{{ $movie->title }}</td>
                     <td>{{ $movie->director }}</td>
-                    <td>{{ App\Helpers\FunctionHelper::convertDate('2002-02-12', 'Y-m-d', 'd/m/Y') }}</td>
+                    <td>{{ FunctionHelper::convertDate('2002-02-12', 'Y-m-d', 'd/m/Y') }}</td>
                     <td>{{ $movie->genre->genre_name }}</td>
                     <td>{{ $movie->language }}</td>
                     <td>

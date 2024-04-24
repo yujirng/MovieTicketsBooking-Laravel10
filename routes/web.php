@@ -3,6 +3,7 @@
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\TheaterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,8 @@ Route::resource('genres', GenreController::class);
 Route::get('genres/{genre}/delete', [GenreController::class, 'delete'])->name('genres.delete');
 
 Route::resource('movies', MovieController::class);
+Route::resource('theaters', TheaterController::class);
+
 
 
 
