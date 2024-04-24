@@ -41,5 +41,19 @@ Route::prefix('feedbacks')->group(function () {
     Route::delete('{feedback}', [FeedbackController::class, 'destroy'])->name('feedbacks.destroy');
 });
 
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('genres', GenreController::class);
+    Route::get('genres/{genre}/delete', [GenreController::class, 'delete'])->name('genres.delete');
 
-Route::resource('test', TestController::class);
+    Route::resource('movies', MovieController::class);
+    Route::resource('theaters', TheaterController::class);
+    Route::resource('screens', ScreenController::class);
+    Route::resource('showtimes', controller: ShowtimeController::class);
+    Route::resource('bookings', controller: BookingController::class);
+    Route::resource('users', controller: UserController::class);
+
+    Route::prefix('feedbacks')->group(function () {
+        Route::get('/', [FeedbackController::class, 'index'])->name('feedbacks.index');
+        Route::delete('{feedback}', [FeedbackController::class, 'destroy'])->name('feedbacks.destroy');
+    });
+});
