@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +19,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('genres', GenreController::class);
+Route::get('genres/{genre}/delete', [GenreController::class, 'delete'])->name('genres.delete');
+
+Route::resource('movies', MovieController::class);
+
+
+
+
+
+Route::resource('test', TestController::class);
