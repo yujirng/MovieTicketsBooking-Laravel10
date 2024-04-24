@@ -1,17 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Create Genre</h1>
+    <h1>Create New Screen</h1>
 
-    <form method="POST" action="{{ route('genres.store') }}">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('screens.store') }}">
         @csrf
         <div class="form-group">
-            <label for="genre_name">Genre Name:</label>
-            <input type="text" class="form-control" id="genre_name" name="genre_name" value="{{ old('genre_name') }}">
-            @error('genre_name')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
+            <label for="theaterId">Theater:</label>
+            <select class="form-control" id="theaterId" name="theater_id">
+                @foreach ($theaters as $theater)
+                    <option value="{{ $theater->id }}">{{ $theater->theater_name }}</option>
+                @endforeach
+            </select>
         </div>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <div class="form-group">
+            <label for="screenName">Screen Name:</label>
+            <input type="text" class="form-control" id="screenName" name="screen_name" placeholder="Enter screen name">
+        </div>
+        <button type="submit" class="btn btn-primary">Create Screen</button>
     </form>
 @endsection

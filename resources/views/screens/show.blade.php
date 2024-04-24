@@ -1,26 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Show Genre</h1>
+    <h1>Show Screen</h1>
 
     <div class="card">
         <div class="card-header">
-            {{ $genre->genre_name }}
+            Screen Details
         </div>
         <div class="card-body">
-            <p><strong>ID:</strong> {{ $genre->id }}</p>
-            <p><strong>Genre Name:</strong> {{ $genre->genre_name }}</p>
-            <p><strong>Created At:</strong> {{ $genre->created_at }}</p>
-            <p><strong>Updated At:</strong> {{ $genre->updated_at }}</p>
-        </div>
-        <div class="card-footer">
-            <a href="{{ route('genres.index') }}" class="btn btn-secondary">Back to List</a>
-            <a href="{{ route('genres.edit', $genre->id) }}" class="btn btn-warning">Edit</a>
-            <form method="POST" action="{{ route('genres.destroy', $genre->id) }}" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+            <p><strong>ID:</strong> {{ $screen->id }}</p>
+            <p><strong>Theater:</strong> {{ $screen->theater->theater_name }}</p>
+            <p><strong>Screen Name:</strong> {{ $screen->screen_name }}</p>
+            <p><strong>Created At:</strong> {{ $screen->created_at->format('Y-m-d H:i:s') }}</p>
         </div>
     </div>
+
+    <a href="{{ route('screens.index') }}" class="btn btn-primary">Back to List</a>
+    <a href="{{ route('screens.edit', $screen) }}" class="btn btn-primary">Edit</a>
 @endsection

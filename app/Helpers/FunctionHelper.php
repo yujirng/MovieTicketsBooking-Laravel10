@@ -22,4 +22,18 @@ class FunctionHelper
             return $dateString;
         }
     }
+
+    public static function formatDateAndTimeFull($dateTimeString)
+    {
+        if (!$dateTimeString) {
+            return '';
+        }
+
+        try {
+            $dateTime = Carbon::parse($dateTimeString);
+            return $dateTime->format('d/m/Y H:i:s');
+        } catch (\Exception $e) {
+            return $dateTimeString;
+        }
+    }
 }

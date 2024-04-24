@@ -1,53 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Genres</h1>
+    <h1>Showtimes</h1>
 
-    <form action="{{ route('genres.index') }}" method="GET">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" name="search" value="{{ request()->get('search') }}">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
-            </div>
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
         </div>
-    </form>
-
-    <a href="{{ route('genres.create') }}" class="btn btn-primary mb-3">Create New Genre</a>
-
-    @if ($genres->count() > 0)
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Genre Name</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($genres as $genre)
-                    <tr>
-                        <td>{{ $genre->id }}</td>
-                        <td>{{ $genre->genre_name }}</td>
-                        <td>{{ $genre->created_at }}</td>
-                        <td>{{ $genre->updated_at }}</td>
-                        <td>
-                            <a href="{{ route('genres.show', $genre->id) }}" class="btn btn-sm btn-info">Show</a>
-                            <a href="{{ route('genres.edit', $genre->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            {{-- <form method="POST" action="{{ route('genres.destroy', $genre->id) }}" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form> --}}
-                            <a href="{{ route('genres.delete', $genre->id) }}" class="btn btn-sm btn-danger">Delete</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $genres->links() }}
-    @else
-        <p>No genres found.</p>
     @endif
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Movie</th>
+                <th>Theater</th>
+                <th>Screen</th>
+                <th>Showtime</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($showtimes as $showtime)
+                <tr>
+                    <td>{{ $showtime->id }}</td>
+                    <td>{{ $showtime->movie->title }}</td>
+                    <td>{{ $showtime->theater->theater_name }}</td>
+                    <td>{{ $showtime->screen->screen_name }}</td>
+                    {{-- <td>{{ $showtime->showtime->format('Y-m-d H:i:s') }}</td> --}}
+                    <td>{{ FunctionHelper::formatDateAndTimeFull($showtime->showtime) }}</td>
+                    <td>{{ $showtime->price }}</td>
+                    <td>
+                        <a href="{{ route('showtimes.show', $showtime) }}" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ route('showtimes.edit', $showtime) }}" class="btn btn-sm btn-primary">Edit</a>
+                        <form method="POST" action="{{ route('showtimes.destroy', $showtime) }}" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <a href="{{ route('showtimes.create') }}" class="btn btn-primary">Create New Showtime</a>
 @endsection

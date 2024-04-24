@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Theater;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Screen>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ShowTime>
  */
-class ScreenFactory extends Factory
+class ShowTimeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,8 +18,6 @@ class ScreenFactory extends Factory
     {
         return [
             //
-            'theater_id' => Theater::factory()->create()->id,
-            'screen_name' => $this->faker->unique()->word,
         ];
     }
 }

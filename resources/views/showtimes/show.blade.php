@@ -1,26 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Show Genre</h1>
+    <h1>Show Showtime</h1>
 
     <div class="card">
         <div class="card-header">
-            {{ $genre->genre_name }}
+            Showtime Details
         </div>
         <div class="card-body">
-            <p><strong>ID:</strong> {{ $genre->id }}</p>
-            <p><strong>Genre Name:</strong> {{ $genre->genre_name }}</p>
-            <p><strong>Created At:</strong> {{ $genre->created_at }}</p>
-            <p><strong>Updated At:</strong> {{ $genre->updated_at }}</p>
-        </div>
-        <div class="card-footer">
-            <a href="{{ route('genres.index') }}" class="btn btn-secondary">Back to List</a>
-            <a href="{{ route('genres.edit', $genre->id) }}" class="btn btn-warning">Edit</a>
-            <form method="POST" action="{{ route('genres.destroy', $genre->id) }}" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+            <p><strong>ID:</strong> {{ $showtime->id }}</p>
+            <p><strong>Movie:</strong> {{ $showtime->movie->title }}</p>
+            <p><strong>Theater:</strong> {{ $showtime->theater->theater_name }}</p>
+            <p><strong>Screen:</strong> {{ $showtime->screen->screen_name }}</p>
+            <p><strong>Showtime:</strong> {{ $showtime->showtime->format('Y-m-d H:i:s') }}</p>
+            <p><strong>Price:</strong> {{ $showtime->price }}</p>
         </div>
     </div>
+
+    <a href="{{ route('showtimes.index') }}" class="btn btn-primary">Back to List</a>
+    <a href="{{ route('showtimes.edit', $showtime) }}" class="btn btn-primary">Edit</a>
 @endsection

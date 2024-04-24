@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ScreenController;
+use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TheaterController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +28,9 @@ Route::get('genres/{genre}/delete', [GenreController::class, 'delete'])->name('g
 
 Route::resource('movies', MovieController::class);
 Route::resource('theaters', TheaterController::class);
+Route::resource('screens', ScreenController::class);
+Route::resource('showtimes', controller: ShowtimeController::class);
+
 
 
 
