@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>User Details</h1>
@@ -22,10 +22,10 @@
     @endcan --}}
 
     {{-- @can('delete-user', $user) --}}
-        <form method="POST" action="{{ route('users.destroy', $user->id) }}" class="d-inline">
-            @method('DELETE')
-            @csrf
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
+    <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="d-inline">
+        @method('DELETE')
+        @csrf
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
     {{-- @endcan --}}
 @endsection

@@ -18,7 +18,7 @@ class ShowtimeController extends Controller
     public function index()
     {
         $showtimes = Showtime::with('movie', 'theater', 'screen')->get(); // Eager load movie, theater, and screen data
-        return view('showtimes.index', compact('showtimes'));
+        return view('admin.showtimes.index', compact('showtimes'));
     }
 
     /**
@@ -31,7 +31,7 @@ class ShowtimeController extends Controller
         $movies = Movie::all();
         $theaters = Theater::all();
         $screens = Screen::all();
-        return view('showtimes.create', compact('movies', 'theaters', 'screens'));
+        return view('admin.showtimes.create', compact('movies', 'theaters', 'screens'));
     }
 
     /**
@@ -43,7 +43,7 @@ class ShowtimeController extends Controller
     public function store(Request $request)
     {
         $showtime = Showtime::create($request->all());
-        return redirect()->route('showtimes.index')->with('success', 'Showtime created successfully!');
+        return redirect()->route('admin.showtimes.index')->with('success', 'Showtime created successfully!');
     }
 
     /**
@@ -55,7 +55,7 @@ class ShowtimeController extends Controller
     public function show(Showtime $showtime)
     {
         $showtime->load('movie', 'theater', 'screen'); // Eager load movie, theater, and screen data
-        return view('showtimes.show', compact('showtime'));
+        return view('admin.showtimes.show', compact('showtime'));
     }
 
     /**
@@ -70,7 +70,7 @@ class ShowtimeController extends Controller
         $movies = Movie::all();
         $theaters = Theater::all();
         $screens = Screen::all();
-        return view('showtimes.edit', compact('showtime', 'movies', 'theaters', 'screens'));
+        return view('admin.showtimes.edit', compact('showtime', 'movies', 'theaters', 'screens'));
     }
 
     /**
@@ -83,7 +83,7 @@ class ShowtimeController extends Controller
     public function update(Request $request, Showtime $showtime)
     {
         $showtime->update($request->all());
-        return redirect()->route('showtimes.index')->with('success', 'Showtime updated successfully!');
+        return redirect()->route('admin.showtimes.index')->with('success', 'Showtime updated successfully!');
     }
 
     /**
@@ -95,6 +95,20 @@ class ShowtimeController extends Controller
     public function destroy(Showtime $showtime)
     {
         $showtime->delete();
-        return redirect()->route('showtimes.index')->with('success', 'Showtime deleted successfully!');
+        return redirect()->route('admin.showtimes.index')->with('success', 'Showtime deleted successfully!');
+    }
+    public function getShowtimes(Request $request)
+    {
+
+        $date = $request->input('date');
+        $theater = $request->input('theater');
+        $movieId = $request->input('movieId');
+
+        $showtimes = ShowTime::with(['theater', 'screen'])
+            ->where('movie_id', $movieId)
+            ->whereDate('showtime', $date)
+            ->get();
+
+        return view('partials.showtimes', compact('showtimes', 'movieId'));
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>Feedbacks</h1>
@@ -29,7 +29,7 @@
                     <td>{{ $feedback->message }}</td>
                     <td>{{ $feedback->created_at->format('Y-m-d H:i:s') }}</td>
                     <td>
-                         <form method="POST" action="{{ route('feedbacks.destroy', ['feedback' => $feedback->id]) }}">
+                        <form method="POST" action="{{ route('feedbacks.destroy', ['feedback' => $feedback->id]) }}">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>

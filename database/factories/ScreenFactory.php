@@ -19,7 +19,7 @@ class ScreenFactory extends Factory
     {
         return [
             //
-            'theater_id' => Theater::factory()->create()->id,
+            'theater_id' => Theater::inRandomOrder()->first()->id,
             'screen_name' => $this->faker->unique()->word,
         ];
     }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>Edit Booking</h1>
@@ -20,11 +20,13 @@
         </div>
         <div class="form-group">
             <label for="total_seats">Total Seats:</label>
-            <input type="number" name="total_seats" id="total_seats" value="{{ $booking->total_seats }}" class="form-control" required>
+            <input type="number" name="total_seats" id="total_seats" value="{{ $booking->total_seats }}"
+                class="form-control" required>
         </div>
         <div class="form-group">
             <label for="booking_date">Booking Date:</label>
-            <input type="date" name="booking_date" id="booking_date" value="{{ $booking->booking_date->format('Y-m-d') }}" class="form-control" required>
+            <input type="date" name="booking_date" id="booking_date"
+                value="{{ $booking->booking_date->format('Y-m-d') }}" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="showtime_id">Showtime:</label>

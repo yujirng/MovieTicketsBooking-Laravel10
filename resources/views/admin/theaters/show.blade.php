@@ -1,5 +1,5 @@
 HTML
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>Show Theater</h1>

@@ -1,10 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>Users</h1>
 
     {{-- @can('create-user') --}}
-        <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Create New User</a>
+    <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">Create New User</a>
     {{-- @endcan --}}
 
     <table class="table table-striped">
@@ -29,16 +29,16 @@
                     <td>{{ $user->birthday }}</td>
                     <td>{{ $user->gender ? 'Male' : 'Female' }}</td>
                     <td>
-                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-primary">Show</a>
+                        <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-primary">Show</a>
                         {{-- @can('edit-user', $user) --}}
-                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary">Edit</a>
                         {{-- @endcan --}}
                         {{-- @can('delete-user', $user) --}}
-                            <form method="POST" action="{{ route('users.destroy', $user->id) }}" class="d-inline">
-                                @method('DELETE')
-                                @csrf
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                        <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="d-inline">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                         {{-- @endcan --}}
                     </td>
                 </tr>

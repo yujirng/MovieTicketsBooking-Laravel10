@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>Theaters</h1>
@@ -29,9 +29,9 @@
                     <td>{{ $theater->theater_phone }}</td>
                     <td>{{ $theater->created_at->format('Y-m-d H:i:s') }}</td>
                     <td>
-                        <a href="{{ route('theaters.show', $theater) }}" class="btn btn-sm btn-info">View</a>
-                        <a href="{{ route('theaters.edit', $theater) }}" class="btn btn-sm btn-primary">Edit</a>
-                        <form method="POST" action="{{ route('theaters.destroy', $theater) }}" class="d-inline">
+                        <a href="{{ route('admin.theaters.show', $theater) }}" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ route('admin.theaters.edit', $theater) }}" class="btn btn-sm btn-primary">Edit</a>
+                        <form method="POST" action="{{ route('admin.theaters.destroy', $theater) }}" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -42,5 +42,5 @@
         </tbody>
     </table>
 
-    <a href="{{ route('theaters.create') }}" class="btn btn-primary">Create New Theater</a>
+    <a href="{{ route('admin.theaters.create') }}" class="btn btn-primary">Create New Theater</a>
 @endsection

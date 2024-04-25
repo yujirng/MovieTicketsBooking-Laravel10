@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>Create User</h1>
 
-    <form method="POST" action="{{ route('users.store') }}">
+    <form method="POST" action="{{ route('admin.users.store') }}">
         @csrf
 
         <div class="form-group">
@@ -23,17 +23,20 @@
 
         <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password"
+                required>
         </div>
 
         <div class="form-group">
             <label for="password_confirmation">Confirm Password:</label>
-            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" required>
+            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+                placeholder="Confirm password" required>
         </div>
 
         <div class="form-group">
             <label for="phone">Phone Number:</label>
-            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number" required>
+            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number"
+                required>
         </div>
 
         <div class="form-group">

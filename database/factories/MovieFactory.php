@@ -22,7 +22,7 @@ class MovieFactory extends Factory
             'title' => $this->faker->sentence,
             'director' => $this->faker->name,
             'release_date' => $this->faker->date,
-            'genre_id' => Genre::factory()->create()->id,
+            'genre_id' => Genre::inRandomOrder()->first()->id,
             'language' => $this->faker->languageCode,
             'trailer_link' => $this->faker->url,
             'description' => $this->faker->paragraph,

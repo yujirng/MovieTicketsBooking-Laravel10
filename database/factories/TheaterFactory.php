@@ -20,7 +20,7 @@ class TheaterFactory extends Factory
             //
             'theater_name' => $this->faker->company,
             'theater_address' => $this->faker->address,
-            'theater_phone' => $this->faker->phoneNumber,
+            'theater_phone' => substr($this->faker->phoneNumber, 0, 15),
         ];
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>Edit Theater</h1>
@@ -20,11 +20,13 @@
         </div>
         <div class="form-group">
             <label for="theaterAddress">Theater Address:</label>
-            <input type="text" class="form-control" id="theaterAddress" name="theater_address" value="{{ $theater->theater_address }}">
+            <input type="text" class="form-control" id="theaterAddress" name="theater_address"
+                value="{{ $theater->theater_address }}">
         </div>
         <div class="form-group">
             <label for="theaterPhone">Theater Phone:</label>
-            <input type="text" class="form-control" id="theaterPhone" name="theater_phone" value="{{ $theater->theater_phone }}">
+            <input type="text" class="form-control" id="theaterPhone" name="theater_phone"
+                value="{{ $theater->theater_phone }}">
         </div>
         <button type="submit" class="btn btn-primary">Update Theater</button>
     </form>

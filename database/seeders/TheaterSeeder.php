@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Theater;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +14,6 @@ class TheaterSeeder extends Seeder
     public function run(): void
     {
         //
-
+        Theater::factory(3)->create();
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>Create New Theater</h1>
@@ -19,11 +19,13 @@
         </div>
         <div class="form-group">
             <label for="theaterAddress">Theater Address:</label>
-            <input type="text" class="form-control" id="theaterAddress" name="theater_address" placeholder="Enter theater address">
+            <input type="text" class="form-control" id="theaterAddress" name="theater_address"
+                placeholder="Enter theater address">
         </div>
         <div class="form-group">
             <label for="theaterPhone">Theater Phone:</label>
-            <input type="text" class="form-control" id="theaterPhone" name="theater_phone" placeholder="Enter theater phone number">
+            <input type="text" class="form-control" id="theaterPhone" name="theater_phone"
+                placeholder="Enter theater phone number">
         </div>
         <button type="submit" class="btn btn-primary">Create Theater</button>
     </form>

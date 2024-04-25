@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
 
 @section('content')
     <h1>Genres</h1>
 
-    <form action="{{ route('genres.index') }}" method="GET">
+    <form action="{{ route('admin.genres.index') }}" method="GET">
         <div class="input-group mb-3">
             <input type="text" class="form-control" name="search" value="{{ request()->get('search') }}">
             <div class="input-group-append">

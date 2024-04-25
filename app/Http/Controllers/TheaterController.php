@@ -12,7 +12,7 @@ class TheaterController extends Controller
     public function index()
     {
         $theaters = Theater::all();
-        return view('theaters.index', compact('theaters'));
+        return view('admin.theaters.index', compact('theaters'));
     }
 
     /**
@@ -22,7 +22,7 @@ class TheaterController extends Controller
      */
     public function create()
     {
-        return view('theaters.create');
+        return view('admin.theaters.create');
     }
 
     /**
@@ -34,7 +34,7 @@ class TheaterController extends Controller
     public function store(Request $request)
     {
         $theater = Theater::create($request->all());
-        return redirect()->route('theaters.index')->with('success', 'Theater created successfully!');
+        return redirect()->route('admin.theaters.index')->with('success', 'Theater created successfully!');
     }
 
     /**
@@ -45,7 +45,7 @@ class TheaterController extends Controller
      */
     public function show(Theater $theater)
     {
-        return view('theaters.show', compact('theater'));
+        return view('admin.theaters.show', compact('theater'));
     }
 
     /**
@@ -56,7 +56,7 @@ class TheaterController extends Controller
      */
     public function edit(Theater $theater)
     {
-        return view('theaters.edit', compact('theater'));
+        return view('admin.theaters.edit', compact('theater'));
     }
 
     /**
@@ -69,7 +69,7 @@ class TheaterController extends Controller
     public function update(Request $request, Theater $theater)
     {
         $theater->update($request->all());
-        return redirect()->route('theaters.index')->with('success', 'Theater updated successfully!');
+        return redirect()->route('admin.theaters.index')->with('success', 'Theater updated successfully!');
     }
 
     /**
@@ -81,6 +81,6 @@ class TheaterController extends Controller
     public function destroy(Theater $theater)
     {
         $theater->delete();
-        return redirect()->route('theaters.index')->with('success', 'Theater deleted successfully!');
+        return redirect()->route('admin.theaters.index')->with('success', 'Theater deleted successfully!');
     }
 }

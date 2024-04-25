@@ -17,23 +17,12 @@ class MovieController extends Controller
         return view('movies.index', compact('movies'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $genres = Genre::all(); // Get all genres for dropdown
         return view('movies.create', compact('genres'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -72,24 +61,12 @@ class MovieController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
     public function show(Movie $movie)
     {
         $movie = $movie->load('genre'); // Eager load genre
         return view('movies.show', compact('movie'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Movie $movie)
     {
         $genres = Genre::all(); // Get all genres for dropdown
@@ -97,13 +74,6 @@ class MovieController extends Controller
         return view('movies.edit', compact('genres', 'movie'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Movie $movie)
     {
         $request->validate([
@@ -138,16 +108,96 @@ class MovieController extends Controller
         return redirect()->route('movies.index')->with('success', 'Movie updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Movie $movie)
     {
         $movie->delete();
 
         return redirect()->route('movies.index')->with('success', 'Movie deleted successfully!');
+    }
+
+    public function indexMovie(Movie $movie)
+    {
+        $runningMovies = Movie::where('running', 1)->where('status', 1)->get();
+        $upcomingMovies = Movie::where('running', 0)->where('status', 1)->get();
+
+        return view('app.index', compact('runningMovies', 'upcomingMovies'));
+    }
+
+
+    public function detailMovie($id)
+    {
+        $movie = Movie::with('showtimes')->find($id);
+
+        if (!$movie) {
+            abort(404);
+        }
+
+        $currentMovies = Movie::where('running', 1)->limit(3)->get();
+
+        $dates = [];
+        for ($i = 0; $i < 4; $i++) {
+            $dates[] = [
+                'date' => date('Y-m-d', strtotime("+$i days")),
+                'formatted_date' => date('D, M j', strtotime("+$i days")),
+            ];
+        }
+
+        return view('app.movies.details', compact('movie', 'currentMovies', 'dates'));
+    }
+
+    public function allMovies(Request $request)
+    {
+        $genres = Genre::all()->pluck('genre_name', 'id');
+        $languages = Movie::distinct()->select('language')->where('status', 1)->orderBy('language', 'desc')->get()->pluck('language'); // Eloquent approach
+        return view('app.movies.all', compact('genres', 'languages'));
+    }
+
+    public function fetchMovies(Request $request)
+    {
+        $search = $request->get('search');
+        $genreIds = $request->get('genre_id');
+        $languages = $request->get('language');
+
+        $movies = Movie::where('status', 1)
+            ->select('movies.*')
+            ->when($search, function ($query, $search) {
+                return $query->where('title', 'like', "%$search%");
+            })
+            ->when($genreIds, function ($query, $genreIds) {
+                return $query->whereIn('genre_id', $genreIds);
+            })
+            ->when($languages, function ($query, $languages) {
+                return $query->whereIn('language', $languages);
+            })
+            ->get();
+
+        return response()->json([
+            'movies' => $movies->toArray(),
+        ], 200);
+    }
+
+    public function fetch(Request $request)
+    {
+        $search = $request->input('search');
+        $genre_ids = $request->input('genre_id');
+        $languages = $request->input('language');
+
+        $query = Movie::query();
+
+        if (!empty($search)) {
+            $query->where('title', 'like', '%' . $search . '%');
+        }
+
+        if (!empty($genre_ids)) {
+            $query->whereIn('genre_id', $genre_ids);
+        }
+
+        if (!empty($languages)) {
+            $query->whereIn('language', $languages);
+        }
+
+        $movies = $query->get();
+
+        return view('app.movies.filtered', compact('movies'));
     }
 }

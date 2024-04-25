@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         // if (Auth::user()->hasRole('admin')) {
         $users = User::all();
-        return view('users.index', compact('users'));
+        return view('admin.users.index', compact('users'));
         // }
 
         return abort(403, 'Unauthorized');
@@ -27,7 +27,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('admin.users.create');
     }
 
     /**
@@ -60,7 +60,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('users.create')
+            return redirect()->route('admin.users.create')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -76,7 +76,7 @@ class UserController extends Controller
             'gender' => $request->gender,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully!');
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully!');
     }
 
     public function edit($id)
@@ -88,7 +88,7 @@ class UserController extends Controller
         //     return abort(403, 'Unauthorized');
         // }
 
-        return view('users.edit', compact('user'));
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
@@ -118,7 +118,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('users.edit', $id)
+            return redirect()->route('admin.users.edit', $id)
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -134,7 +134,7 @@ class UserController extends Controller
             'gender' => $request->gender,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully!');
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully!');
     }
 
     public function destroy($id)
@@ -148,6 +148,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully!');
     }
 }

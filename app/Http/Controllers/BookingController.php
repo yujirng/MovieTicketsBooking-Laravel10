@@ -13,14 +13,14 @@ class BookingController extends Controller
     public function index()
     {
         $bookings = Booking::with('user', 'showtime')->get(); // Eager load user and showtime data
-        return view('bookings.index', compact('bookings'));
+        return view('admin.bookings.index', compact('bookings'));
     }
 
     public function create()
     {
         $users = User::all();
         $showtimes = Showtime::all();
-        return view('bookings.create', compact('users', 'showtimes'));
+        return view('admin.bookings.create', compact('users', 'showtimes'));
     }
 
     public function store(Request $request)
@@ -38,13 +38,13 @@ class BookingController extends Controller
             'total_price' => $totalPrice,
         ]);
 
-        return redirect()->route('bookings.index')->with('success', 'Booking created successfully!');
+        return redirect()->route('admin.bookings.index')->with('success', 'Booking created successfully!');
     }
 
     public function show(Booking $booking)
     {
         $booking->load('user', 'showtime'); // Eager load user and showtime data
-        return view('bookings.show', compact('booking'));
+        return view('admin.bookings.show', compact('booking'));
     }
 
     public function edit(Booking $booking)
@@ -52,7 +52,7 @@ class BookingController extends Controller
         $booking->load('user', 'showtime'); // Eager load user and showtime data
         $users = User::all();
         $showtimes = Showtime::all();
-        return view('bookings.edit', compact('booking', 'users', 'showtimes'));
+        return view('admin.bookings.edit', compact('booking', 'users', 'showtimes'));
     }
 
 
@@ -70,12 +70,12 @@ class BookingController extends Controller
             'total_price' => $totalPrice,
         ]);
 
-        return redirect()->route('bookings.index')->with('success', 'Booking updated successfully!');
+        return redirect()->route('admin.bookings.index')->with('success', 'Booking updated successfully!');
     }
 
     public function destroy(Booking $booking)
     {
         $booking->delete();
-        return redirect()->route('bookings.index')->with('success', 'Booking deleted successfully!');
+        return redirect()->route('admin.bookings.index')->with('success', 'Booking deleted successfully!');
     }
 }
