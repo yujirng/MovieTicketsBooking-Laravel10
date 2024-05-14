@@ -20,14 +20,53 @@
 
                 </div>
 
-                <div class="col-lg-6 col-md-6">
-                    <div class="header__top__right">
-                        <div class="header__top__links">
-                            <a class="top__links--unlogin" href="login.php">Sign in</a>
-                            <a class="top__links--unlogin" href="register.php">Register</a>
+                @if (Auth::check())
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+                                <div class="dropdown">
+                                    <button class="btn btn-fix btn-secondary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        @if (Auth::user()->image == '')
+                                            <img src="{{ asset('template/app/images/default.jpg') }}" alt="Avatar"
+                                                class="avatar mr-2">
+                                        @else
+                                            <img src="{{ Storage::url(Auth::user()->image) }}" alt="Avatar"
+                                                class="avatar mr-2">
+                                        @endif
+                                        <span class="font-weight-bold mr-1">{{ Auth::user()->username }}</span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="{{ route('user.information') }}"><i
+                                                    class="fa fa-user"></i>
+                                                Account</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('user.booking.history') }}"><i
+                                                    class="fa fa-ticket"></i> History Booking</a></li>
+                                        <li>
+                                            <form method="POST" action="{{ route('logout') }}">
+                                                @csrf
+                                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault(); this.closest('form').submit();">
+                                                    <i class="fa fa-sign-out"></i> Logout
+                                                </a>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @else
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+                                <a class="top__links--unlogin" href="{{ route('login') }}">Sign in</a>
+                                <a class="top__links--unlogin" href="{{ route('register') }}">Register</a>
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
             </div>
         </div>

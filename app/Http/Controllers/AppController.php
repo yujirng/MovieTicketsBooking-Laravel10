@@ -7,6 +7,7 @@ use App\Models\ShowTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AppController extends Controller
 {
@@ -109,7 +110,7 @@ class AppController extends Controller
 
         // $user = auth()->user(); // Lấy thông tin người dùng hiện tại đăng nhập
         // hoặc
-        $user = User::where('username', 'leonel98')->first();
+        $user = User::where('username', Auth::user()->id)->first();
 
         return view('app.booking.summary', [
             'showtimeId' => $showtimeId,
@@ -158,5 +159,48 @@ class AppController extends Controller
         return view('app.booking.ticketshow', [
             'bookingInfo' => $bookingInfo
         ]);
+    }
+
+    public function showUserInformation()
+    {
+        $user = Auth::user();
+        return view('app.user.information', compact('user'));
+    }
+
+    public function updateUserInformation(Request $request)
+    {
+        $user = Auth::user();
+
+        // Cập nhật thông tin người dùng
+
+        return redirect()->back()->with('success', 'User information updated successfully.');
+    }
+
+    public function changePassword(Request $request)
+    {
+        // Xử lý thay đổi mật khẩu
+    }
+
+    public function bookingHistory(Request $request)
+    {
+        $user = Auth::user();
+
+        $bookingList = Booking::where('user_id', $user->id)
+            ->with('showtime.movie', 'showtime.theater', 'showtime.screen', 'user')
+            ->get();
+
+        return view('app.user.bookinghistory', compact('bookingList', 'user'));
+    }
+
+    public function showUserNotifications()
+    {
+        $user = Auth::user();
+        return view('app.user.notifications', compact('user'));
+    }
+
+    public function showUserGifts()
+    {
+        $user = Auth::user();
+        return view('app.user.gifts', compact('user'));
     }
 }
