@@ -12,7 +12,7 @@
             @foreach ($runningMovies as $movie)
                 <div class="col-lg-3 col-md-3 col-sm-6 mb-3">
                     <div class="image-container position-relative">
-                        <img src="uploads/{{ $movie->image }}" alt=""
+                        <img src="{{ Storage::url('movie_images/' . $movie->image) }}" alt=""
                             class="w-100 img-fluid image-resize2 object-fit-cover">
                         <div class="overlay">
                             <div class="overlay-buttons">
@@ -60,8 +60,8 @@
                 <div class="image-box">
                     <div class="col-lg-2 col-md-3 col-sm-6">
                         <div class="card" style="width: 12rem;">
-                            <img class="card-img-top image-resize4 w-100" src="uploads/{{ $movie->image }}"
-                                alt="Card image cap">
+                            <img class="card-img-top image-resize4 w-100"
+                                src="{{ Storage::url('movie_images/' . $movie->image) }}" alt="Card image cap">
 
                             <div class="card-body">
                                 <h5 class="card-title">{{ $movie->title }}</h5>
@@ -71,7 +71,6 @@
                     </div>
                 </div>
             @endforeach
-            ?>
 
         </div>
     </div>

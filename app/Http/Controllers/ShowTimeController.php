@@ -18,7 +18,8 @@ class ShowtimeController extends Controller
     public function index()
     {
         $showtimes = Showtime::with('movie', 'theater', 'screen')->get(); // Eager load movie, theater, and screen data
-        return view('admin.showtimes.index', compact('showtimes'));
+        return view('admin.showtimes.index', compact('showtimes'))
+            ->with('title', "Showtimes");;
     }
 
     /**
@@ -31,7 +32,8 @@ class ShowtimeController extends Controller
         $movies = Movie::all();
         $theaters = Theater::all();
         $screens = Screen::all();
-        return view('admin.showtimes.create', compact('movies', 'theaters', 'screens'));
+        return view('admin.showtimes.create', compact('movies', 'theaters', 'screens'))
+            ->with('title', "Create Showtime");;
     }
 
     /**
@@ -70,7 +72,8 @@ class ShowtimeController extends Controller
         $movies = Movie::all();
         $theaters = Theater::all();
         $screens = Screen::all();
-        return view('admin.showtimes.edit', compact('showtime', 'movies', 'theaters', 'screens'));
+        return view('admin.showtimes.edit', compact('showtime', 'movies', 'theaters', 'screens'))
+            ->with('title', "Update Showtime");;
     }
 
     /**

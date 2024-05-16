@@ -4,7 +4,8 @@
         <div class="col-11">
             <div class="card border-0 shadow-lg mb-4 rounded-0">
                 <div class="card-body">
-                    <form action="update_user_info.php" method="post" id="updateForm">
+                    <form action="{{ route('user.information.update') }}" method="post" id="updateForm">
+                        @csrf
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="name">Họ và tên:</label>
@@ -83,7 +84,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="change_password.php" method="post">
+                <form action="{{ route('user.changepassword') }}" method="post">
+                    @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="currentPassword">Mật khẩu cũ:</label>

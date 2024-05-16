@@ -12,7 +12,8 @@ class TheaterController extends Controller
     public function index()
     {
         $theaters = Theater::all();
-        return view('admin.theaters.index', compact('theaters'));
+        return view('admin.theaters.index', compact('theaters'))
+            ->with('title', "Theater");;
     }
 
     /**
@@ -22,7 +23,8 @@ class TheaterController extends Controller
      */
     public function create()
     {
-        return view('admin.theaters.create');
+        return view('admin.theaters.create')
+            ->with('title', "Create Theater");;
     }
 
     /**
@@ -34,7 +36,8 @@ class TheaterController extends Controller
     public function store(Request $request)
     {
         $theater = Theater::create($request->all());
-        return redirect()->route('admin.theaters.index')->with('success', 'Theater created successfully!');
+        return redirect()->route('admin.theaters.index')
+            ->with('success', 'Theater created successfully!');
     }
 
     /**
@@ -45,7 +48,8 @@ class TheaterController extends Controller
      */
     public function show(Theater $theater)
     {
-        return view('admin.theaters.show', compact('theater'));
+        return view('admin.theaters.show', compact('theater'))
+            ->with('title', "Theater Details");;
     }
 
     /**
@@ -56,7 +60,8 @@ class TheaterController extends Controller
      */
     public function edit(Theater $theater)
     {
-        return view('admin.theaters.edit', compact('theater'));
+        return view('admin.theaters.edit', compact('theater'))
+            ->with('title', "Edit Theater");;
     }
 
     /**

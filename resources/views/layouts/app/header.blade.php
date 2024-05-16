@@ -35,7 +35,7 @@
                                             <img src="{{ Storage::url(Auth::user()->image) }}" alt="Avatar"
                                                 class="avatar mr-2">
                                         @endif
-                                        <span class="font-weight-bold mr-1">{{ Auth::user()->username }}</span>
+                                        <span class="font-weight-bold mr-1">{{ Auth::user()->name }}</span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <li><a class="dropdown-item" href="{{ route('user.information') }}"><i

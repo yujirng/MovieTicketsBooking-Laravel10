@@ -21,8 +21,8 @@
             <p><b>Running:</b> {{ $movie->running ? 'Yes' : 'No' }}</p>
         </div>
         <div class="card-footer">
-            <a href="{{ route('movies.index') }}" class="btn btn-secondary">Back to List</a>
-            <a href="{{ route('movies.edit', $movie) }}" class="btn btn-primary">Edit Movie</a>
+            <a href="{{ route('admin.movies.index') }}" class="btn btn-secondary">Back to List</a>
+            <a href="{{ route('admin.movies.edit', $movie) }}" class="btn btn-primary">Edit Movie</a>
         </div>
     </div>
 @endsection

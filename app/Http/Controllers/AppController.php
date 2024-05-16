@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class AppController extends Controller
 {
@@ -80,37 +82,27 @@ class AppController extends Controller
 
     public function showBookingSummary(Request $request)
     {
-        // Lấy dữ liệu từ request
         $showtimeId = $request->input('showtimeId');
         $selectedSeats = $request->input('selected-seats');
         $totalSeats = $request->input('total-seats');
         $totalPrice = $request->input('total_price');
 
-        // Lấy thông tin về suất chiếu, phim và người dùng
         $bookingInfo = Showtime::where('id', $showtimeId)
             ->with('movie', 'theater', 'screen')
             ->firstOrFail();
 
-        $showtimeString = $bookingInfo->showtime; // Lấy giá trị dạng chuỗi
-        $showtimeDateTime = date_create($showtimeString); // Chuyển đổi chuỗi thành đối tượng DateTime
+        $showtimeString = $bookingInfo->showtime;
+        $showtimeDateTime = date_create($showtimeString);
 
-        // Kiểm tra nếu chuyển đổi thành công
         if ($showtimeDateTime !== false) {
-            $showDate = date_format($showtimeDateTime, 'd/m/Y'); // Lấy ngày
-            $showTime = date_format($showtimeDateTime, 'H:i'); // Lấy giờ
+            $showDate = date_format($showtimeDateTime, 'd/m/Y');
+            $showTime = date_format($showtimeDateTime, 'H:i');
         } else {
-            // Xử lý khi chuyển đổi không thành công
             $showDate = null;
             $showTime = null;
         }
 
-        // Lấy thông tin người dùng từ session hoặc cơ sở dữ liệu
-        // Giả sử thông tin người dùng được lưu trong bảng users
-        // và bạn đã thiết lập middleware xác thực cho các route cần thiết
-
-        // $user = auth()->user(); // Lấy thông tin người dùng hiện tại đăng nhập
-        // hoặc
-        $user = User::where('username', Auth::user()->id)->first();
+        $user = User::where('id', Auth::user()->id)->first();
 
         return view('app.booking.summary', [
             'showtimeId' => $showtimeId,
@@ -126,7 +118,7 @@ class AppController extends Controller
 
     public function paymentForm(Request $request)
     {
-        // Lấy thông tin cần thiết từ request
+
         $showtimeId = $request->input('showtimeId');
         $userId = $request->input('userId');
         $seats = $request->input('seats');
@@ -134,7 +126,6 @@ class AppController extends Controller
         $totalPrice = $request->input('total-price');
         $bookingDate = $request->input('booking-date');
 
-        // Tạo bản ghi booking mới trong cơ sở dữ liệu
         $booking = new Booking();
         $booking->user_id = $userId;
         $booking->seats = $seats;
@@ -142,20 +133,25 @@ class AppController extends Controller
         $booking->booking_date = $bookingDate;
         $booking->showtime_id = $showtimeId;
         $booking->total_price = $totalPrice;
-        $booking->save(); // Lưu bản ghi vào cơ sở dữ liệu
+        $booking->save();
 
-        // Lấy booking ID vừa được tạo
         $bookingId = $booking->id;
 
-        // // Lưu booking ID vào session
-        // $request->session()->put('booking_id', $bookingId);
-
         $bookingInfo = Booking::where('id', $bookingId)
-            ->where('id', $bookingId)
             ->with('showtime.movie', 'showtime.theater', 'showtime.screen', 'user')
             ->first();
 
-        // Hiển thị view payment_form và truyền các thông tin cần thiết
+        return view('app.booking.ticketshow', [
+            'bookingInfo' => $bookingInfo
+        ]);
+    }
+
+    public function showTicket(Request $request)
+    {
+        $bookingInfo = Booking::where('id', $request->bookingId)
+            ->with('showtime.movie', 'showtime.theater', 'showtime.screen', 'user')
+            ->first();
+
         return view('app.booking.ticketshow', [
             'bookingInfo' => $bookingInfo
         ]);
@@ -169,16 +165,46 @@ class AppController extends Controller
 
     public function updateUserInformation(Request $request)
     {
-        $user = Auth::user();
 
-        // Cập nhật thông tin người dùng
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'birthday' => 'required|date',
+            'email' => 'required|string|email|max:255|unique:users,email,' . Auth::id(),
+            'phone' => 'required|string|max:15',
+            'gender' => 'required|in:0,1',
+        ]);
+
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $user->update([
+            'name' => $request->name,
+            'birthday' => $request->birthday,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'gender' => $request->gender,
+        ]);
 
         return redirect()->back()->with('success', 'User information updated successfully.');
     }
 
     public function changePassword(Request $request)
     {
-        // Xử lý thay đổi mật khẩu
+        $request->validate([
+            'currentPassword' => 'required',
+            'newPassword' => 'required|min:6',
+        ]);
+
+        $user = User::where('id', Auth::user()->id)->first();
+
+        if (!Hash::check($request->currentPassword, $user->password)) {
+            return redirect()->back()->withErrors(['new_password' => 'Mật khẩu hiện tại không đúng']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->newPassword),
+        ]);
+
+        return redirect()->back()->with('success', 'Mật khẩu đã được thay đổi thành công!');
     }
 
     public function bookingHistory(Request $request)

@@ -16,7 +16,7 @@ class ScreenController extends Controller
     public function index()
     {
         $screens = Screen::with('theater')->get(); // Eager load theater data
-        return view('screens.index', compact('screens'));
+        return view('admin.screens.index', compact('screens'));
     }
 
     /**
@@ -27,7 +27,7 @@ class ScreenController extends Controller
     public function create()
     {
         $theaters = Theater::all();
-        return view('screens.create', compact('theaters'));
+        return view('admin.screens.create', compact('theaters'));
     }
 
     /**
@@ -39,7 +39,7 @@ class ScreenController extends Controller
     public function store(Request $request)
     {
         $screen = Screen::create($request->all());
-        return redirect()->route('screens.index')->with('success', 'Screen created successfully!');
+        return redirect()->route('admin.screens.index')->with('success', 'Screen created successfully!');
     }
 
     /**
@@ -51,7 +51,7 @@ class ScreenController extends Controller
     public function show(Screen $screen)
     {
         $screen->load('theater'); // Eager load theater data
-        return view('screens.show', compact('screen'));
+        return view('admin.screens.show', compact('screen'));
     }
 
     /**
@@ -64,7 +64,7 @@ class ScreenController extends Controller
     {
         $screen->load('theater'); // Eager load theater data
         $theaters = Theater::all();
-        return view('screens.edit', compact('screen', 'theaters'));
+        return view('admin.screens.edit', compact('screen', 'theaters'));
     }
 
     /**
@@ -77,7 +77,7 @@ class ScreenController extends Controller
     public function update(Request $request, Screen $screen)
     {
         $screen->update($request->all());
-        return redirect()->route('screens.index')->with('success', 'Screen updated successfully!');
+        return redirect()->route('admin.screens.index')->with('success', 'Screen updated successfully!');
     }
 
     /**
@@ -89,6 +89,6 @@ class ScreenController extends Controller
     public function destroy(Screen $screen)
     {
         $screen->delete();
-        return redirect()->route('screens.index')->with('success', 'Screen deleted successfully!');
+        return redirect()->route('admin.screens.index')->with('success', 'Screen deleted successfully!');
     }
 }

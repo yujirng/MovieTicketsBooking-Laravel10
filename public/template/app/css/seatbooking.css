@@ -54,7 +54,7 @@ h2 {
 
 .seat.occupied,
 .seat-sample .occupied {
-    background-color: #fff;
+    background-color: #f59e0b;
 }
 
 /* Selects the nth elements among the group of siblings */
@@ -116,6 +116,6 @@ p.text {
     margin: 5px 0;
 }
 
-p.text span {
-    color: #6feaf6;
+.highlight-text {
+    color: #d97706;
 }

@@ -7,6 +7,23 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="offset-xl-1 col-xl-10">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+            </div>
+        </div>
         <div class="row my-5">
             <div class="offset-xl-1 col-xl-3 px-xl-4">
                 <div class="card border-0 shadow-lg mb-4 px-xl-4">
@@ -15,7 +32,7 @@
                         style="width: 250px; height: 250px; object-fit: cover;">
                     <div class="card-body text-center">
                         <h3 class="card-title mt-1">{{ $user->name }}</h3>
-                        <p class="card-text text-muted text-uppercase">{{ '@' . $user->username }}</p>
+                        {{-- <p class="card-text text-muted text-uppercase">{{ '@' . $user->name }}</p> --}}
                         <ul class="list-unstyled text-left">
                             <hr>
                             <li class="d-flex justify-content-between"><span><strong>Hotline:</strong> 1900 ...</span> <i

@@ -1,17 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>Create New Theater</h1>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('theaters.store') }}">
+    <form method="POST" action="{{ route('admin.theaters.store') }}">
         @csrf
         <div class="form-group">
             <label for="theaterName">Theater Name:</label>

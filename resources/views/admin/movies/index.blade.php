@@ -1,11 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>Movies</h1>
-
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <a href="{{ route('admin.movies.create') }}" class="btn btn-primary mb-3">Create Movie</a>
 
     <table class="table table-striped">
         <thead>
@@ -27,9 +23,9 @@
                     <td>{{ $movie->genre->genre_name }}</td>
                     <td>{{ $movie->language }}</td>
                     <td>
-                        <a href="{{ route('movies.show', $movie) }}" class="btn btn-sm btn-info">View</a>
-                        <a href="{{ route('movies.edit', $movie) }}" class="btn btn-sm btn-primary">Edit</a>
-                        <form method="POST" action="{{ route('movies.destroy', $movie) }}" class="d-inline">
+                        <a href="{{ route('admin.movies.show', $movie) }}" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ route('admin.movies.edit', $movie) }}" class="btn btn-sm btn-primary">Edit</a>
+                        <form method="POST" action="{{ route('admin.movies.destroy', $movie) }}" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -40,5 +36,7 @@
         </tbody>
     </table>
 
-    <a href="{{ route('movies.create') }}" class="btn btn-primary">Create Movie</a>
+    <div class="row d-flex justify-content-center">
+        {{ $movies->links() }}
+    </div>
 @endsection

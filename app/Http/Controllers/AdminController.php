@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         //
+
     }
 
     /**
@@ -22,20 +26,25 @@ class AdminController extends Controller
     public function create()
     {
         //
+        return view('admin.auth.login');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAdminRequest $request)
+    public function store(Request $request)
     {
         //
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 1])) {
+            return redirect()->route('admin.index');
+        }
+        return redirect()->back()->with('err', 'Sai thông tin');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Admin $admin)
+    public function show()
     {
         //
     }
@@ -43,7 +52,7 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Admin $admin)
+    public function edit()
     {
         //
     }
@@ -51,7 +60,7 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAdminRequest $request, Admin $admin)
+    public function update(UpdateAdminRequest $request,)
     {
         //
     }
@@ -59,8 +68,10 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Admin $admin)
+    public function destroy()
     {
         //
+        Auth::logout();
+        return redirect()->route('admin.login');
     }
 }

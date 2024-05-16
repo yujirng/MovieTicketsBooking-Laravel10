@@ -29,7 +29,7 @@
                 <div class="card">
                     <div class="card-header">
                         <center><img src="{{ asset('template/app/images/logo.png') }}" width="40%">
-                            <h6> Nha Trang, Khanh Hoa</h6>
+                            <h6> {{ $bookingInfo->showtime->theater->theater_address }}</h6>
                         </center>
 
                         <table>

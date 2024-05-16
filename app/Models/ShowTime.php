@@ -15,6 +15,7 @@ class ShowTime extends Model
         'movie_id',
         'theater_id',
         'screen_id',
+        'room_id',
         'showtime',
         'price',
     ];
@@ -32,5 +33,10 @@ class ShowTime extends Model
     public function screen()
     {
         return $this->belongsTo(Screen::class);
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
     }
 }

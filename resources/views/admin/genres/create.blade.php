@@ -1,9 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>Create Genre</h1>
-
-    <form method="POST" action="{{ route('genres.store') }}">
+    <form method="POST" action="{{ route('admin.genres.store') }}">
         @csrf
         <div class="form-group">
             <label for="genre_name">Genre Name:</label>

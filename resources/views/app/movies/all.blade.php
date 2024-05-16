@@ -14,6 +14,28 @@
                         </div>
 
                         <div class="list-group px-3 py-1">
+                            <h3 class="part-line">Status</h3>
+                            <div class="card border-0">
+                                <div class="list-group-item">
+                                    <input id="running" type="checkbox" class="common_selector running checkbox__input"
+                                        value="running">
+                                    <label for="running" class="ml-2">
+                                        <span class="checkbox__label"></span>
+                                        Running
+                                    </label>
+                                </div>
+                                <div class="list-group-item">
+                                    <input id="upcomming" type="checkbox" class="common_selector upcomming checkbox__input"
+                                        value="upcomming">
+                                    <label for="upcomming" class="ml-2">
+                                        <span class="checkbox__label"></span>
+                                        Upcomming
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group px-3 py-1">
                             <h3 class="part-line">Category</h3>
                             <div class="card border-0">
                                 @foreach ($genres as $genreId => $genreName)
@@ -70,6 +92,8 @@
                 var search = $('#search').val();
                 var genre_id = get_filter('genre');
                 var language = get_filter('language');
+                var running = get_filter('running');
+                var upcomming = get_filter('upcomming');
                 $.ajax({
                     url: "{{ route('movies.fetch') }}",
                     method: "GET",
@@ -77,7 +101,9 @@
                         action: action,
                         search: search,
                         genre_id: genre_id,
-                        language: language
+                        language: language,
+                        running: running,
+                        upcomming: upcomming,
                     },
                     success: function(data) {
                         $('.filter_data').html(data);

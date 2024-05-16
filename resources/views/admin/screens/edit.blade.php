@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('screens.update', $screen) }}">
+    <form method="POST" action="{{ route('admin.screens.update', $screen) }}">
         @csrf
         @method('PUT')
         <div class="form-group">

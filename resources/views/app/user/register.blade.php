@@ -1,196 +1,124 @@
-<?php
-session_start();
-require_once 'config/db_connect.php';
-
-if (isset($_POST['check_username'])) {
-    $check_username = $_POST['check_username'];
-    $check_query = mysqli_query($conn, "SELECT * FROM users WHERE username='$check_username'");
-    if (mysqli_num_rows($check_query) > 0) {
-        echo '1';
-    } else {
-        echo '0';
-    }
-    exit();
-}
-
-?>
-
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
-    <title>Registration</title>
-    <link rel="stylesheet" href="assets/css/register.css">
-    <script src="assets/js/jquery.min.js"></script>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Login</title>
+    <link rel="stylesheet" href="/template/app/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/template/app/css/font-awesome.min.css" type="text/css">
+    {{-- <link rel="stylesheet" href="/template/app/css/elegant-icons.css" type="text/css"> --}}
+    <link rel="stylesheet" href="/template/app/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/template/app/css/nice-select.css" type="text/css">
+    <!--<link rel="stylesheet" href="/template/app/css/owl.carousel.min.css" type="text/css">-->
+    <link rel="stylesheet" href="/template/app/css/slicknav.min.css" type="text/css">
 </head>
 
 <body>
+    <div class="container vh-100">
+        <div class="row justify-content-sm-center h-100 align-items-center">
+            <div class="col-xxl-8 col-xl-9 col-lg-9 col-md-8 col-sm-9">
+                <div class="card shadow-lg">
+                    <div class="card-body py-3 px-5">
+                        <div class="row">
+                            <div class="text-center my-2 ms-auto w-100">
+                                <img src="{{ asset('template/app/images/logo.png') }}" alt="logo"
+                                    style="height: 100px;">
+                            </div>
+                        </div>
+                        <h4 class="fs-4 card-title fw-bold mb-4">Register</h4>
+                        @include('partials.notify')
+                        <form method="POST" action="{{ route('register') }}" class="needs-validation">
+                            @csrf
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2 text-muted" for="name">Name</label>
+                                        <input id="name" type="text" class="form-control" name="name"
+                                            value="" required autofocus>
+                                    </div>
+                                </div>
 
-    <div class="container">
+                                <div class="col-xl-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2 text-muted" for="password">Phone Number</label>
+                                        <input id="password" type="phone" class="form-control" name="phonenumber"
+                                            required>
+                                    </div>
 
-        <?php
-        
-        function uploadFile($file)
-        {
-            $filename = $file['name'];
-            $location = 'uploads/' . $filename;
-        
-            $file_extension = pathinfo($location, PATHINFO_EXTENSION);
-            $file_extension = strtolower($file_extension);
-            $image_ext = ['jpg', 'png', 'jpeg', 'gif'];
-        
-            if (in_array($file_extension, $image_ext)) {
-                if (move_uploaded_file($file['tmp_name'], $location)) {
-                    return $location;
-                }
-            }
-        
-            return false;
-        }
-        
-        function getNewUserId($conn)
-        {
-            $result = mysqli_query($conn, 'SELECT MAX(id) AS max_userid FROM users');
-            $row = mysqli_fetch_assoc($result);
-            $max_userid = $row['max_userid'];
-            $new_userid = $max_userid + 1;
-            return $new_userid;
-        }
-        
-        if (isset($_POST['submit'])) {
-            $new_userid = getNewUserId($conn);
-        
-            $username = $_POST['username'];
-            $name = $_POST['fullname'];
-            $email = $_POST['email'];
-            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            $phone = $_POST['phone'];
-            $birthday = $_POST['birthday'];
-        
-            $uploadedLocation = uploadFile($_FILES['image']);
-        
-            if ($uploadedLocation) {
-                $file_extension = pathinfo($uploadedLocation, PATHINFO_EXTENSION);
-                $new_filename = "avatar-uid-$new_userid.$file_extension";
-                $new_location = 'uploads/' . $new_filename;
-                rename($uploadedLocation, $new_location);
-        
-                try {
-                    $insert_record = mysqli_query(
-                        $conn,
-                        "INSERT INTO users (`username`, `name`, `email`, `password`, `phone`, `birthday`, `image`) 
-                                VALUES ('$username', '$name', '$email', '$password', '$phone', '$birthday', '$new_filename')",
-                    );
-        
-                    if ($insert_record) {
-                        header('Location: login.php?msg=Registration successful! Please log in.');
-                        exit();
-                    }
-                } catch (Exception $e) {
-                    $msg = 'Đăng ký không thành công';
-                }
-            } else {
-                $msg = 'Định dạng file không hợp lệ';
-            }
-        }
-        
-        ?>
+                                </div>
+                            </div>
 
-        <center><a href="./index.php"><img src="assets/images/logo.png" alt=""
-                    style="margin: 30px 0; width: 35%;"></a>
-        </center>
-        <div class="title">Registration</div>
-        <div class="content">
-            <form id="form" action="" method="post" enctype="multipart/form-data">
-                <div class="php-message">
-                    <p class="text-danger"><?php echo isset($msg) ? $msg : ''; ?></p>
-                    <p class="text-danger" id="username-message"></p>
-                </div>
-                <div class="user-details">
-                    <div class="input-box">
-                        <span class="details">Full Name</span>
-                        <input type="text" id="fullname" name="fullname" placeholder="Enter your name"
-                            value="<?php if (isset($username)) {
-                                echo $username;
-                            } ?>" required>
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2 text-muted" for="password">Password</label>
+                                        <input id="password" type="password" class="form-control" name="password"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2 text-muted" for="email">E-Mail Address</label>
+                                        <input id="email" type="email" class="form-control" name="email"
+                                            value="" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2 text-muted" for="gender">Gender</label>
+                                        <div class="d-flex justify-content-start">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" id="genderMale"
+                                                    name="gender" value="0" required checked>
+                                                <label class="form-check-label" for="genderMale">Male</label>
+                                            </div>
+                                            <div class="form-check ml-4">
+                                                <input class="form-check-input" type="radio" id="genderFemale"
+                                                    name="gender" value="1">
+                                                <label class="form-check-label" for="genderFemale">Female</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="mb-3">
+                                        <label class="mb-2 text-muted" for="password">Date of Birth</label>
+                                        <input id="password" type="date" class="form-control" name="birthday"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="image">Image:</label>
+                                <input type="file" class="form-control" id="image" name="image">
+                            </div>
+
+                            <div class="justify-content-between align-items-center d-flex">
+                                <p class="form-text text-muted mb-3">
+                                    <input type="checkbox" required>
+                                    By registering you agree with our terms and condition.
+                                </p>
+                                <button type="submit" class="btn btn-primary ms-auto">
+                                    Register
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="input-box">
-                        <span class="details">Username</span>
-                        <input type="text" id="username" name="username" placeholder="Enter your name"
-                            value="<?php if (isset($name)) {
-                                echo $name;
-                            } ?>" required pattern="[a-zA-Z0-9]+" onblur="checkUsername()">
-                        <!--                    <p class="text-danger" id="username-message"></p>-->
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Email</span>
-                        <input type="email" id="email" name="email" placeholder="Enter your Email"
-                            value="<?php if (isset($email)) {
-                                echo $email;
-                            } ?>" required>
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Phone Number</span>
-                        <input type="tel" id="number" name="phone" placeholder="Enter your Phone Number"
-                            value="<?php if (isset($phone)) {
-                                echo $phone;
-                            } ?>" required pattern="[0-9]{10}">
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Birthday</span>
-                        <input type="date" id="birthday" name="birthday" value="<?php if (isset($birthday)) {
-                            echo $birthday;
-                        } ?>" required>
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Password</span>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" required
-                            pattern=".{3,10}">
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Image uploaded (Option)</span>
-                        <input type="file" id="image" name="image" style="padding-top: 10px;">
-                    </div>
-                    <div class="input-box">
-                        <span class="details">Confirm Password</span>
-                        <input type="password" id="cpassword" name="cpassword" placeholder="Confirm your password"
-                            required pattern=".{3,10}">
+                    <div class="card-footer py-3 border-0">
+                        <div class="text-center">
+                            Already have an account? <a href="{{ route('login') }}" class="text-dark">Login</a>
+                        </div>
                     </div>
                 </div>
-                <div class="button">
-                    <input type="submit" value="Register" id="submit" name="submit">
+                <div class="text-center mt-5 text-muted">
+                    Copyright &copy; 2024 &mdash; &#64;Azir-Cinema
                 </div>
-            </form>
+            </div>
         </div>
-
-        <script>
-            function checkUsername() {
-                var username = $("#username").val();
-                $.ajax({
-                    type: 'POST',
-                    url: 'register.php',
-                    data: {
-                        check_username: username
-                    },
-                    success: function(response) {
-                        if (response.trim() === "1") {
-                            $("#username-message").text("Username already exists!");
-                            $("#submit").prop("disabled", true);
-                        } else {
-                            $("#username-message").text("");
-                            $("#submit").prop("disabled", false);
-                        }
-                    }
-                });
-            }
-        </script>
-
     </div>
 </body>
-
-</html>

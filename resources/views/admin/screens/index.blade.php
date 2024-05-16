@@ -27,9 +27,9 @@
                     <td>{{ $screen->theater->theater_name }}</td>
                     <td>{{ $screen->created_at->format('Y-m-d H:i:s') }}</td>
                     <td>
-                        <a href="{{ route('screens.show', $screen) }}" class="btn btn-sm btn-info">View</a>
-                        <a href="{{ route('screens.edit', $screen) }}" class="btn btn-sm btn-primary">Edit</a>
-                        <form method="POST" action="{{ route('screens.destroy', $screen) }}" class="d-inline">
+                        <a href="{{ route('admin.screens.show', $screen) }}" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ route('admin.screens.edit', $screen) }}" class="btn btn-sm btn-primary">Edit</a>
+                        <form method="POST" action="{{ route('admin.screens.destroy', $screen) }}" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -40,5 +40,5 @@
         </tbody>
     </table>
 
-    <a href="{{ route('screens.create') }}" class="btn btn-primary">Create New Screen</a>
+    <a href="{{ route('admin.screens.create') }}" class="btn btn-primary">Create New Screen</a>
 @endsection

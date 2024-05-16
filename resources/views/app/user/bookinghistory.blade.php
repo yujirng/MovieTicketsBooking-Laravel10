@@ -32,8 +32,13 @@
                                         <td>{{ $booking->total_price }}</td>
                                         <td>{{ $booking->showtime->screen->screen_name }}</td>
                                         <td>
-                                            <a class="btn btn-info"
-                                                href="{{ route('paymentForm', ['bookingId' => $booking->id]) }}">Ticket</a>
+                                            <form action="{{ route('showticket', ['bookingId' => $booking->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                <a class="btn btn-info text-white"
+                                                    onclick="event.preventDefault();
+                                                    this.closest('form').submit();">Ticket</a>
+                                            </form>
                                         </td>
                                     </tr>
                                 @empty

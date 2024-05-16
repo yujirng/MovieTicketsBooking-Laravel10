@@ -1,13 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>Theaters</h1>
-
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    <a href="{{ route('admin.theaters.create') }}" class="btn btn-primary mb-3">Create New Theater</a>
 
     <table class="table table-striped">
         <thead>
@@ -41,6 +35,4 @@
             @endforeach
         </tbody>
     </table>
-
-    <a href="{{ route('admin.theaters.create') }}" class="btn btn-primary">Create New Theater</a>
 @endsection

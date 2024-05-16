@@ -14,9 +14,9 @@
             <p><strong>Updated At:</strong> {{ $genre->updated_at }}</p>
         </div>
         <div class="card-footer">
-            <a href="{{ route('genres.index') }}" class="btn btn-secondary">Back to List</a>
-            <a href="{{ route('genres.edit', $genre->id) }}" class="btn btn-warning">Edit</a>
-            <form method="POST" action="{{ route('genres.destroy', $genre->id) }}" class="d-inline">
+            <a href="{{ route('admin.genres.index') }}" class="btn btn-secondary">Back to List</a>
+            <a href="{{ route('admin.genres.edit', $genre->id) }}" class="btn btn-warning">Edit</a>
+            <form method="POST" action="{{ route('admin.genres.destroy', $genre->id) }}" class="d-inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger">Delete</button>

@@ -15,7 +15,8 @@ class GenreController extends Controller
         $searchTerm = $request->get('search');
         $genres = Genre::searchByName($searchTerm)->paginate(10);
 
-        return view('genres.index', compact('genres', 'searchTerm'));
+        return view('admin.genres.index', compact('genres', 'searchTerm'))
+            ->with('title', "Genres");
     }
 
     /**
@@ -24,7 +25,8 @@ class GenreController extends Controller
     public function create()
     {
         //
-        return view('genres.create');
+        return view('admin.genres.create')
+            ->with('title', "Create Genre");
     }
 
     /**
@@ -39,7 +41,7 @@ class GenreController extends Controller
 
         Genre::create($request->all());
 
-        return redirect()->route('genres.index')
+        return redirect()->route('admin.genres.index')
             ->with('success', 'Genre created successfully.');
     }
 
@@ -50,7 +52,8 @@ class GenreController extends Controller
     {
         //
         $genre = Genre::findOrFail($id);
-        return view('genres.show', compact('genre'));
+        return view('admin.genres.show', compact('genre'))
+            ->with('title', "Genre Details");;
     }
 
     /**
@@ -60,7 +63,8 @@ class GenreController extends Controller
     {
         //
         $genre = Genre::findOrFail($id);
-        return view('genres.edit', compact('genre'));
+        return view('admin.genres.edit', compact('genre'))
+            ->with('title', "Edit Genre");;
     }
 
     /**
@@ -76,7 +80,7 @@ class GenreController extends Controller
         $genre = Genre::findOrFail($id);
         $genre->update($request->all());
 
-        return redirect()->route('genres.index')
+        return redirect()->route('admin.genres.index')
             ->with('success', 'Genre updated successfully.');
     }
 
@@ -86,7 +90,8 @@ class GenreController extends Controller
     public function delete(string $id)
     {
         $genre = Genre::findOrFail($id);
-        return view('genres.delete', ['genre' => $genre]);
+        return view('admin.genres.delete', ['genre' => $genre])
+            ->with('title', "Delete Genre");;
         //
     }
 
@@ -96,7 +101,7 @@ class GenreController extends Controller
         $genre->delete();
 
 
-        return redirect()->route('genres.index')
+        return redirect()->route('admin.genres.index')
             ->with('success', 'Genre deleted successfully.');
     }
 }

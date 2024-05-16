@@ -14,6 +14,6 @@
         </div>
     </div>
 
-    <a href="{{ route('bookings.index') }}" class="btn btn-primary">Back to List</a>
-    <a href="{{ route('bookings.edit', $booking) }}" class="btn btn-warning">Edit</a>
+    <a href="{{ route('admin.bookings.index') }}" class="btn btn-primary">Back to List</a>
+    <a href="{{ route('admin.bookings.edit', $booking) }}" class="btn btn-warning">Edit</a>
 @endsection

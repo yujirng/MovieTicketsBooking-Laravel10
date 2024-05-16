@@ -12,15 +12,17 @@ class BookingController extends Controller
 
     public function index()
     {
-        $bookings = Booking::with('user', 'showtime')->get(); // Eager load user and showtime data
-        return view('admin.bookings.index', compact('bookings'));
+        $bookings = Booking::with('user', 'showtime')->get();
+        return view('admin.bookings.index', compact('bookings'))
+            ->with('title', 'Bookings');
     }
 
     public function create()
     {
         $users = User::all();
         $showtimes = Showtime::all();
-        return view('admin.bookings.create', compact('users', 'showtimes'));
+        return view('admin.bookings.create', compact('users', 'showtimes'))
+            ->with('title', 'Create Booking');
     }
 
     public function store(Request $request)
@@ -29,7 +31,7 @@ class BookingController extends Controller
         $showtime = Showtime::find($request->showtime_id);
         $totalPrice = $showtime->price * $request->total_seats;
 
-        $booking = Booking::create([
+        Booking::create([
             'user_id' => $request->user_id,
             'seats' => $request->seats,
             'total_seats' => $request->total_seats,
@@ -44,7 +46,8 @@ class BookingController extends Controller
     public function show(Booking $booking)
     {
         $booking->load('user', 'showtime'); // Eager load user and showtime data
-        return view('admin.bookings.show', compact('booking'));
+        return view('admin.bookings.show', compact('booking'))
+            ->with('title', 'Booking Details');
     }
 
     public function edit(Booking $booking)
@@ -52,7 +55,8 @@ class BookingController extends Controller
         $booking->load('user', 'showtime'); // Eager load user and showtime data
         $users = User::all();
         $showtimes = Showtime::all();
-        return view('admin.bookings.edit', compact('booking', 'users', 'showtimes'));
+        return view('admin.bookings.edit', compact('booking', 'users', 'showtimes'))
+            ->with('title', 'Edit Booking');
     }
 
 

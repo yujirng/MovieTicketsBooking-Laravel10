@@ -1,89 +1,73 @@
-<html>
+<!DOCTYPE html>
+<html lang="vi">
 
 <head>
-    <title> Login Page</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/site.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Login</title>
+    <link rel="stylesheet" href="/template/app/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/template/app/css/font-awesome.min.css" type="text/css">
+    {{-- <link rel="stylesheet" href="/template/app/css/elegant-icons.css" type="text/css"> --}}
+    <link rel="stylesheet" href="/template/app/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/template/app/css/nice-select.css" type="text/css">
+    <!--<link rel="stylesheet" href="/template/app/css/owl.carousel.min.css" type="text/css">-->
+    <link rel="stylesheet" href="/template/app/css/slicknav.min.css" type="text/css">
 </head>
 
 <body>
-    <div>
-
-        <div class="parent-container mx-auto vh-100">
-            <table width="100%" height="100%">
-                <tr>
-                    <td align="center" valign="middle">
-                        <div class="loginholder">
-                            <form id="loginForm" action="{{ route('login') }}" method="POST">
-                                @csrf
-                                <table style="background-color:white;" class="table-condensed">
-                                    <tr>
-                                        <a href="{{ route('app.index') }}"><img
-                                                src="{{ asset('template/app/images/logo.png') }}" alt=""
-                                                width="180px"></a>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <hr style="background-color:blue;height:1px;margin:0px;" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Username:</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" class="inputbox" id="username" name="username"
-                                                required />
-                                            <br>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Password:</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="password" class="inputbox" id="password" name="password"
-                                                required />
-                                            <br>
-                                            <p id="msg" class="mt-5 text-danger text-center"><?php if (isset($msg)) {
-                                                echo $msg;
-                                            } ?>
-                                            </p>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td align="center"><br />
-
-                                            <input type="submit" class="btn-normal" name="login" id="login"
-                                                value="LOGIN">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="left"><br />
-                                            <span class="forgetpassword"><a href="forget_password.php"> Forget your
-                                                    Password ?</a></span>
-                                        </td>
-
-                                    </tr>
-                                    <td><a href="register.php"> Register now</a></td>
-                                    <tr>
-                                        <td>
-                                            <hr style="background-color:blue;height:1px;margin:0px;" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="center"></td>
-                                    </tr>
-
-                                </table>
-                            </form>
+    <div class="container vh-100">
+        <div class="row justify-content-sm-center my-auto h-100 align-items-center">
+            <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <div class="row">
+                            <div class="text-center my-5 ms-auto w-100">
+                                <img src="{{ asset('template/app/images/logo.png') }}" alt="logo"
+                                    style="height: 100px;">
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            </table>
+                        <h4 class="fs-4 card-title fw-bold mb-4">Login</h4>
+                        @include('partials.notify')
+
+                        <form method="POST" action="{{ route('login') }}" class="needs-validation">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="email">E-Mail Address</label>
+                                <input id="email" type="email" class="form-control" name="email" value=""
+                                    required autofocus>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="mb-2 w-100 d-flex justify-content-between">
+                                    <label class="text-muted" for="password">Password</label>
+                                    <a href="forgot.html">
+                                        Forgot Password?
+                                    </a>
+                                </div>
+                                <input id="password" type="password" class="form-control" name="password" required>
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="form-check">
+                                    <input type="checkbox" name="remember" id="remember" class="form-check-input">
+                                    <label for="remember" class="form-check-label">Remember Me</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary ms-auto">
+                                    Login
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer py-3 border-0">
+                        <div class="text-center">
+                            Don't have an account? <a href="{{ route('register') }}" class="text-dark">Create One</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-5 text-muted">
+                    Copyright &copy; 2024 &mdash; &#64;Azir-Cinema
+                </div>
+            </div>
         </div>
     </div>
 </body>
-
-</html>

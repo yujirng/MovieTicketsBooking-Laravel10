@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('screens.store') }}">
+    <form method="POST" action="{{ route('admin.screens.store') }}">
         @csrf
         <div class="form-group">
             <label for="theaterId">Theater:</label>

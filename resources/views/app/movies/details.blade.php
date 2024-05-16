@@ -103,7 +103,8 @@
         <!-- Trailer Embed -->
         <div class="row mt-4" style="background-color: black;">
             <div class="d-flex justify-content-center w-100">
-                <img src="uploads/{{ $movie->image }}" class="img-fluid" style="height: 500px; width: 600px;" alt="Movie Image">
+                <img src="{{ Storage::url('movie_images/' . $movie->image) }}" class="img-fluid"
+                    style="height: 500px; width: 600px;" alt="Movie Image">
                 <button type="button"
                     class="btn bg-white btn-play position-absolute rounded-circle d-flex align-items-center justify-content-center"
                     style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; width: 64px; height: 64px;"
@@ -128,7 +129,7 @@
         <div class="row feature design">
             <div class="col-lg-8">
                 <div class="row">
-                    <div class="offset-lg-1 col-lg-4"><img src="uploads/{{ $movie->image }}"
+                    <div class="offset-lg-1 col-lg-4"><img src="{{ Storage::url('movie_images/' . $movie->image) }}"
                             class="rounded shadow-lg movie-detail-image resize-detail object-fit-cover" alt=""
                             width="100%"></div>
                     <div class="col-lg-7 mb-lg-5">
@@ -217,8 +218,8 @@
                                 <div class="card shadow-lg mb-3 p-3 border-0">
                                     <div class="col-md-12">
                                         <div class="image-container">
-                                            <img src="uploads/{{ $currentMovie->image }}" alt=""
-                                                class="w-100 img-fluid image-resize2 showing-movie">
+                                            <img src="{{ Storage::url('movie_images/' . $currentMovie->image) }}"
+                                                alt="" class="w-100 img-fluid image-resize2 showing-movie">
                                             <div class="overlay">
                                                 <div class="overlay-buttons">
                                                     <div class="col">

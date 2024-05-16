@@ -17,11 +17,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
-        // return view('app.user.login');
+        // return view('auth.login');
+        return view('app.user.login');
     }
 
-    /**
+    /**r
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse

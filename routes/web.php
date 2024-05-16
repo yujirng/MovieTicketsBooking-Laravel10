@@ -7,9 +7,11 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ScreenController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,12 +58,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::get('/admin/login', [AdminController::class, 'create'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'store']);
+Route::post('/admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
+
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
+
+    Route::get('/', [GenreController::class, 'index'])->name('index');
+
     Route::resource('genres', GenreController::class);
     Route::get('genres/{genre}/delete', [GenreController::class, 'delete'])->name('genres.delete');
 
     Route::resource('movies', MovieController::class);
     Route::resource('theaters', TheaterController::class);
+    Route::resource('rooms', RoomController::class);
     Route::resource('screens', ScreenController::class);
     Route::resource('showtimes', controller: ShowtimeController::class);
     Route::resource('bookings', controller: BookingController::class);
@@ -85,6 +95,8 @@ Route::get('/showtimes/fetch', [ShowtimeController::class, 'getShowtimes'])->nam
 Route::get('/seatbooking', [AppController::class, 'seatbooking'])->name('seatbooking');
 Route::post('/payment/process', [AppController::class, 'showBookingSummary'])->name('payment');
 Route::post('/ticket_show', [AppController::class, 'paymentForm'])->name('paymentForm');
+Route::post('/showticket', [AppController::class, 'showTicket'])->name('showticket');
+
 
 // Route::get('/login', [AppController::class, 'seatbooking'])->name('login');
 

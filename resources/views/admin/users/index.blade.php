@@ -1,17 +1,12 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>Users</h1>
-
-    {{-- @can('create-user') --}}
     <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">Create New User</a>
-    {{-- @endcan --}}
 
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Username</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Birthday</th>
@@ -23,7 +18,6 @@
             @foreach ($users as $user)
                 <tr>
                     <td>{{ $user->name }}</td>
-                    <td>{{ $user->username }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->phone }}</td>
                     <td>{{ $user->birthday }}</td>

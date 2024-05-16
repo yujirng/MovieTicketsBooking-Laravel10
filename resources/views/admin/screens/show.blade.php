@@ -15,6 +15,6 @@
         </div>
     </div>
 
-    <a href="{{ route('screens.index') }}" class="btn btn-primary">Back to List</a>
-    <a href="{{ route('screens.edit', $screen) }}" class="btn btn-primary">Edit</a>
+    <a href="{{ route('admin.screens.index') }}" class="btn btn-primary">Back to List</a>
+    <a href="{{ route('admin.screens.edit', $screen) }}" class="btn btn-primary">Edit</a>
 @endsection

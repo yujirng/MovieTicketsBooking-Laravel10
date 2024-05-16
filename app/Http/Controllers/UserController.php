@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         // if (Auth::user()->hasRole('admin')) {
         $users = User::all();
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('users'))->with('title', "Users");;
         // }
 
         return abort(403, 'Unauthorized');
@@ -27,7 +27,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return view('admin.users.show', compact('user'));
+        return view('admin.users.show', compact('user'))->with('title', "User Details");;
     }
 
     /**
@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        return view('admin.users.create')->with('title', "Create User");;
     }
 
     /**
@@ -50,7 +50,6 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'username' => 'required|string|min:3|max:30|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required|string|min:10|max:15|unique:users',
@@ -67,7 +66,6 @@ class UserController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
@@ -88,7 +86,7 @@ class UserController extends Controller
         //     return abort(403, 'Unauthorized');
         // }
 
-        return view('admin.users.edit', compact('user'));
+        return view('admin.users.edit', compact('user'))->with('title', "Edit User");;
     }
 
     /**
@@ -109,9 +107,8 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'username' => 'required|string|min:3|max:30|unique:users,id,' . $id, // Exclude current ID from unique check
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id, // Exclude current ID from unique check
-            'phone' => 'required|string|min:10|max:15|unique:users,phone,' . $id, // Exclude current ID from unique check
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'phone' => 'required|string|min:10|max:15|unique:users,phone,' . $id,
             'birthday' => 'required|date',
             'image' => 'nullable|string|max:100',
             'gender' => 'required|boolean',
@@ -125,7 +122,6 @@ class UserController extends Controller
 
         $user->update([
             'name' => $request->name,
-            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password), // Update password if changed
             'phone' => $request->phone,

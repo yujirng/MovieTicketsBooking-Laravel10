@@ -9,6 +9,6 @@
         @csrf
         @method('DELETE')
         <button type="submit" class="btn btn-danger">Delete</button>
-        <a href="{{ route('genres.index') }}" class="btn btn-primary">Cancel</a>
+        <a href="{{ route('admin.genres.index') }}" class="btn btn-primary">Cancel</a>
     </form>
 @endsection

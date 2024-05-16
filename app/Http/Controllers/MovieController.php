@@ -13,14 +13,16 @@ class MovieController extends Controller
 {
     public function index()
     {
-        $movies = Movie::with('genre')->paginate(10); // Paginate results (optional)
-        return view('movies.index', compact('movies'));
+        $movies = Movie::with('genre')->paginate(10);
+        return view('admin.movies.index', compact('movies'))
+            ->with('title', "Movies");;
     }
 
     public function create()
     {
         $genres = Genre::all(); // Get all genres for dropdown
-        return view('movies.create', compact('genres'));
+        return view('admin.movies.create', compact('genres'))
+            ->with('title', "Create Movie");;
     }
 
     public function store(Request $request)
@@ -33,7 +35,6 @@ class MovieController extends Controller
             'language' => 'required|string|max:100',
             'trailer_link' => 'nullable|url|max:255',
             'description' => 'required|string|max:300',
-            // 'image' => 'nullable|string|max:100',
             'image' => 'nullable|file|image|max:2048',
             'status' => 'required|integer',
             'running' => 'required|integer',
@@ -51,12 +52,10 @@ class MovieController extends Controller
 
             Movie::create($data);
 
-            return redirect()->route('movies.index')->with('success', 'Movie created successfully!');
+            return redirect()->route('admin.movies.index')->with('success', 'Movie created successfully!');
         } catch (\Throwable $e) {
-            // Handle general errors here (e.g., database errors)
             return back()->withInput()->withErrors(['error' => 'An error occurred while creating the movie. Please try again.']);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Handle validation errors with more specific messages
             return back()->withInput()->withErrors($e->validator->errors());
         }
     }
@@ -64,14 +63,16 @@ class MovieController extends Controller
     public function show(Movie $movie)
     {
         $movie = $movie->load('genre'); // Eager load genre
-        return view('movies.show', compact('movie'));
+        return view('admin.movies.show', compact('movie'))
+            ->with('title', "Movie Details");;
     }
 
     public function edit(Movie $movie)
     {
         $genres = Genre::all(); // Get all genres for dropdown
         $movie = $movie->load('genre'); // Eager load genre
-        return view('movies.edit', compact('genres', 'movie'));
+        return view('admin.movies.edit', compact('genres', 'movie'))
+            ->with('title', "Update Movie");;
     }
 
     public function update(Request $request, Movie $movie)
@@ -105,14 +106,15 @@ class MovieController extends Controller
 
         $movie->update($request->all());
 
-        return redirect()->route('movies.index')->with('success', 'Movie updated successfully!');
+        return redirect()->route('admin.movies.index')->with('success', 'Movie updated successfully!');
     }
 
     public function destroy(Movie $movie)
     {
         $movie->delete();
 
-        return redirect()->route('movies.index')->with('success', 'Movie deleted successfully!');
+        return redirect()->route('admin.movies.index')->with('success', 'Movie deleted successfully!')
+            ->with('title', "Delete Movie");;
     }
 
     public function indexMovie(Movie $movie)
@@ -159,7 +161,6 @@ class MovieController extends Controller
         $languages = $request->get('language');
 
         $movies = Movie::where('status', 1)
-            ->select('movies.*')
             ->when($search, function ($query, $search) {
                 return $query->where('title', 'like', "%$search%");
             })
@@ -181,8 +182,10 @@ class MovieController extends Controller
         $search = $request->input('search');
         $genre_ids = $request->input('genre_id');
         $languages = $request->input('language');
+        $running = $request->input('running');
+        $upcomming = $request->input('upcomming');
 
-        $query = Movie::query();
+        $query = Movie::query()->where('status', 1);
 
         if (!empty($search)) {
             $query->where('title', 'like', '%' . $search . '%');
@@ -194,6 +197,17 @@ class MovieController extends Controller
 
         if (!empty($languages)) {
             $query->whereIn('language', $languages);
+        }
+
+        if (!empty($running) && !empty($upcomming)) {
+        } else {
+            if (!empty($running)) {
+                $query->where('running', 1);
+            }
+
+            if (!empty($upcomming)) {
+                $query->where('running', 0);
+            }
         }
 
         $movies = $query->get();

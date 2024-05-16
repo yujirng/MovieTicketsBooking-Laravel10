@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>Bookings</h1>
+    <a href="{{ route('admin.bookings.create') }}" class="btn btn-primary mb-3">Create Booking</a>
 
     <table class="table table-striped">
         <thead>
@@ -28,9 +28,9 @@
                     <td>{{ FunctionHelper::formatDateAndTimeFull($booking->showtime->showtime) }}</td>
                     <td>{{ $booking->total_price }}</td>
                     <td>
-                        <a href="{{ route('bookings.show', $booking) }}" class="btn btn-sm btn-info">View</a>
-                        <a href="{{ route('bookings.edit', $booking) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('bookings.destroy', $booking) }}" method="post" class="d-inline">
+                        <a href="{{ route('admin.bookings.show', $booking) }}" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ route('admin.bookings.edit', $booking) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route('admin.bookings.destroy', $booking) }}" method="post" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-sm btn-danger">Delete</button>
@@ -40,5 +40,4 @@
             @endforeach
         </tbody>
     </table>
-    <a href="{{ route('bookings.create') }}" class="btn btn-primary">Create Booking</a>
 @endsection

@@ -3,7 +3,7 @@
 @section('content')
     <h1>Create Booking</h1>
 
-    <form action="{{ route('bookings.store') }}" method="post">
+    <form action="{{ route('admin.bookings.store') }}" method="post">
         @csrf
         <div class="form-group">
             <label for="user_id">User:</label>

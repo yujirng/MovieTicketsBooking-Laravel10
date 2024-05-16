@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('rooms', function (Blueprint $table) {
             $table->id();
+            $table->string('room_name');
+            $table->unsignedInteger('quantity');
+            $table->string('screen_name');
+            $table->unsignedBigInteger('theater_id');
+            $table->foreign('theater_id')->references('id')->on('theaters');
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('feedback');
+        Schema::dropIfExists('rooms');
     }
 };
