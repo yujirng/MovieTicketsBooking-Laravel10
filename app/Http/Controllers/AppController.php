@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\ShowTime;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
@@ -16,17 +17,20 @@ class AppController extends Controller
     //
     public function feedback()
     {
-        return view('app.feedback');
+        $genres = Genre::pluck('genre_name');
+        return view('app.feedback', compact('genres'));
     }
 
     public function contacts()
     {
-        return view('app.contacts');
+        $genres = Genre::pluck('genre_name');
+        return view('app.contacts', compact('genres'));
     }
 
     public function about()
     {
-        return view('app.about');
+        $genres = Genre::pluck('genre_name');
+        return view('app.about', compact('genres'));
     }
 
     // public function seatbooking(Request $request)
@@ -54,6 +58,7 @@ class AppController extends Controller
             $showtimeInfo = ShowTime::select('movies.title', 'movies.image', 'showtimes.price', DB::raw('DATE_FORMAT(showtimes.showtime, "%Y-%m-%d") AS show_date'), DB::raw('DATE_FORMAT(showtimes.showtime, "%H:%i") AS show_time'))
                 ->join('movies', 'showtimes.movie_id', '=', 'movies.id')
                 ->where('showtimes.id', $showtimeId)
+                ->with('rooms.screen_name')
                 ->first();
 
             if (!$showtimeInfo) {
@@ -65,6 +70,7 @@ class AppController extends Controller
             $showDate = $showtimeInfo->show_date;
             $showTime = $showtimeInfo->show_time;
             $showPrice = $showtimeInfo->price;
+            $screen_name = $showtimeInfo->screen_name;
 
             return view('app.booking.seatbooking', [
                 'movieTitle' => $movieTitle,
@@ -74,6 +80,7 @@ class AppController extends Controller
                 'showPrice' => $showPrice,
                 'showtimeId' => $showtimeId,
                 'occupiedSeats' => $occupiedSeats,
+                'screen_name' => $screen_name
             ]);
         } else {
             return redirect()->route('index');
@@ -88,7 +95,8 @@ class AppController extends Controller
         $totalPrice = $request->input('total_price');
 
         $bookingInfo = Showtime::where('id', $showtimeId)
-            ->with('movie', 'theater', 'screen')
+            // ->with('movie', 'theater', 'screen')
+            ->with('movie', 'theater', 'room')
             ->firstOrFail();
 
         $showtimeString = $bookingInfo->showtime;
@@ -160,7 +168,8 @@ class AppController extends Controller
     public function showUserInformation()
     {
         $user = Auth::user();
-        return view('app.user.information', compact('user'));
+        $genres = Genre::pluck('genre_name');
+        return view('app.user.information', compact('user', 'genres'));
     }
 
     public function updateUserInformation(Request $request)
@@ -210,12 +219,13 @@ class AppController extends Controller
     public function bookingHistory(Request $request)
     {
         $user = Auth::user();
+        $genres = Genre::pluck('genre_name');
 
         $bookingList = Booking::where('user_id', $user->id)
             ->with('showtime.movie', 'showtime.theater', 'showtime.screen', 'user')
             ->get();
 
-        return view('app.user.bookinghistory', compact('bookingList', 'user'));
+        return view('app.user.bookinghistory', compact('bookingList', 'user', 'genres'));
     }
 
     public function showUserNotifications()

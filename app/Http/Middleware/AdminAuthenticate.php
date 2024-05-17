@@ -16,8 +16,13 @@ class AdminAuthenticate
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 1)
-            return $next($request);
+        if (Auth::check()) {
+            if (Auth::user()->role === 1) {
+                return $next($request);
+            } else {
+                return redirect()->route('app.index');
+            }
+        }
         return redirect()->route('admin.login');
     }
 }

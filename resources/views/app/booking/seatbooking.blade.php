@@ -203,7 +203,8 @@
                                         height="300"></td>
                                 <td>
                                     <font size=6 style="color:black">{{ $movieTitle }}</font>
-                                    <font size="3px" style="display: block; color:black">2D phụ đề</font>
+                                    {{-- <font size="3px" style="display: block; color:black">2D phụ đề</font> --}}
+                                    <font size="3px" style="display: block; color:black">{{ $screen_name }}</font>
                                 </td>
                             </tr>
                             <tr>

@@ -16,11 +16,11 @@
                 <div class="footer__widget">
                     <h6>Menu</h6>
                     <ul>
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="allmovie.php">All Movie</a></li>
-                        <li><a href="about.php">About Us</a></li>
-                        <li><a href="feedback.php">Feedback</a></li>
-                        <li><a href="contact.php">Contact Us</a></li>
+                        <li><a href="{{ route('app.index') }}">Home</a></li>
+                        <li><a href="{{ route('app.movies.all') }}">All Movies</a></li>
+                        <li><a href="{{ route('app.about') }}">About Us</a></li>
+                        <li><a href="{{ route('app.feedback') }}">Feedback</a></li>
+                        <li><a href="{{ route('app.contacts') }}">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
@@ -28,11 +28,14 @@
                 <div class="footer__widget">
                     <h6>Category</h6>
                     <ul>
-                        <li><a href="allmovie.php">Action</a></li>
-                        <li><a href="allmovie.php">Drama</a></li>
-                        <li><a href="allmovie.php">Comedy</a></li>
-                        <li><a href="allmovie.php">History</a></li>
-                        <li><a href="allmovie.php">Hrror</a></li>
+                        {{-- <li><a href="{{ route('app.movies.all') }}">Action</a></li>
+                        <li><a href="{{ route('app.movies.all') }}">Drama</a></li>
+                        <li><a href="{{ route('app.movies.all') }}">Comedy</a></li>
+                        <li><a href="{{ route('app.movies.all') }}">History</a></li>
+                        <li><a href="{{ route('app.movies.all') }}">Hrror</a></li> --}}
+                        @foreach ($genres as $genre_name)
+                            <li><a href="{{ route('app.movies.all') }}">{{ $genre_name }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

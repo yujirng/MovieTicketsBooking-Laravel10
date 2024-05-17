@@ -20,7 +20,7 @@ class MovieController extends Controller
 
     public function create()
     {
-        $genres = Genre::all(); // Get all genres for dropdown
+        $genres = Genre::all();
         return view('admin.movies.create', compact('genres'))
             ->with('title', "Create Movie");;
     }
@@ -62,7 +62,7 @@ class MovieController extends Controller
 
     public function show(Movie $movie)
     {
-        $movie = $movie->load('genre'); // Eager load genre
+        $movie = $movie->load('genre');
         return view('admin.movies.show', compact('movie'))
             ->with('title', "Movie Details");;
     }
@@ -122,13 +122,16 @@ class MovieController extends Controller
         $runningMovies = Movie::where('running', 1)->where('status', 1)->get();
         $upcomingMovies = Movie::where('running', 0)->where('status', 1)->get();
 
-        return view('app.index', compact('runningMovies', 'upcomingMovies'));
+        $genres = Genre::pluck('genre_name');
+
+        return view('app.index', compact('runningMovies', 'upcomingMovies', 'genres'));
     }
 
 
     public function detailMovie($id)
     {
         $movie = Movie::with('showtimes')->find($id);
+        $genres = Genre::pluck('genre_name');
 
         if (!$movie) {
             abort(404);
@@ -144,7 +147,7 @@ class MovieController extends Controller
             ];
         }
 
-        return view('app.movies.details', compact('movie', 'currentMovies', 'dates'));
+        return view('app.movies.details', compact('movie', 'currentMovies', 'dates', 'genres'));
     }
 
     public function allMovies(Request $request)

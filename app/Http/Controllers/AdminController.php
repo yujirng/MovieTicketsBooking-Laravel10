@@ -34,11 +34,16 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 1])) {
-            return redirect()->route('admin.index');
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $userRole = Auth::user()->role;
+
+            if ($userRole === 1) {
+                return redirect()->route('admin.index');
+            } else {
+                return redirect()->route('app.index');
+            }
         }
-        return redirect()->back()->with('err', 'Sai thông tin');
+        return redirect()->back()->with('error', 'Không thể đăng nhập!');
     }
 
     /**

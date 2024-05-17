@@ -43,14 +43,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -92,10 +87,14 @@ Route::get('/feedback', [AppController::class, 'feedback'])->name('app.feedback'
 Route::get('/movies/fetch', [MovieController::class, 'fetch'])->name('movies.fetch');
 Route::get('/showtimes/fetch', [ShowtimeController::class, 'getShowtimes'])->name('showtimes.fetch');
 
-Route::get('/seatbooking', [AppController::class, 'seatbooking'])->name('seatbooking');
-Route::post('/payment/process', [AppController::class, 'showBookingSummary'])->name('payment');
-Route::post('/ticket_show', [AppController::class, 'paymentForm'])->name('paymentForm');
-Route::post('/showticket', [AppController::class, 'showTicket'])->name('showticket');
+Route::middleware('auth')->group(function () {
+    Route::get('/seatbooking', [AppController::class, 'seatbooking'])->name('seatbooking');
+    Route::post('/payment/process', [AppController::class, 'showBookingSummary'])->name('payment');
+    Route::post('/ticket_show', [AppController::class, 'paymentForm'])->name('paymentForm');
+    Route::post('/showticket', [AppController::class, 'showTicket'])->name('showticket');
+});
+
+
 
 
 // Route::get('/login', [AppController::class, 'seatbooking'])->name('login');
