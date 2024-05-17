@@ -16,6 +16,7 @@ class Booking extends Model
         'booking_date',
         'showtime_id',
         'total_price',
+        'payment_id'
     ];
 
     public function user()
@@ -26,5 +27,10 @@ class Booking extends Model
     public function showtime()
     {
         return $this->belongsTo(Showtime::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class, 'payment_id', 'id');
     }
 }

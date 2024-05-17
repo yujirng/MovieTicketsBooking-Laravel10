@@ -71,7 +71,8 @@
                             </tr>
                             <tr>
                                 <td>{{ $bookingInfo->booking_date }}</td>
-                                <td style="padding: 12px 105px;">RS. {{ $bookingInfo->total_price }}/-</td>
+                                {{-- <td style="padding: 12px 105px;">RS. {{ $bookingInfo->total_price }}/-</td> --}}
+                                <td style="padding: 12px 105px;">{{ $bookingInfo->total_price }}đ</td>
                             </tr>
                         </table>
 

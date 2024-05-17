@@ -14,7 +14,6 @@ class ShowTime extends Model
     protected $fillable = [
         'movie_id',
         'theater_id',
-        'screen_id',
         'room_id',
         'showtime',
         'price',
@@ -28,11 +27,6 @@ class ShowTime extends Model
     public function theater()
     {
         return $this->belongsTo(Theater::class);
-    }
-
-    public function screen()
-    {
-        return $this->belongsTo(Screen::class);
     }
 
     public function room()

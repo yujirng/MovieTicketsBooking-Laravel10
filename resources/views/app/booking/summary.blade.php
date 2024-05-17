@@ -74,6 +74,17 @@
                             Confirm Payment
                         </button>
                     </form>
+                    <form action="{{ route('paymentMomo') }}" method="POST">
+                        <input type="hidden" name="showtimeId" value="{{ $showtimeId }}">
+                        <input type="hidden" name="userId" value="{{ $user->id }}">
+                        <input type="hidden" name="seats" value="{{ $selectedSeats }}">
+                        <input type="hidden" name="total-seats" value="{{ $totalSeats }}">
+                        <input type="hidden" name="total-price" value="{{ $totalPrice }}">
+                        <input type="hidden" name="booking-date" value="{{ date('Y-m-d', strtotime('today')) }}">
+                        <button type="submit" class="subscribe btn btn-primary btn-block shadow-sm">
+                            Thanh toán Momo
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

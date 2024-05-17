@@ -6,58 +6,39 @@ use App\Models\Showtime;
 use App\Models\Movie;
 use App\Models\Theater;
 use App\Models\Screen;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class ShowtimeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $showtimes = Showtime::with('movie', 'theater', 'screen')->get(); // Eager load movie, theater, and screen data
+        $showtimes = Showtime::with('movie', 'theater', 'room')->get(); // Eager load movie, theater, and screen data
         return view('admin.showtimes.index', compact('showtimes'))
             ->with('title', "Showtimes");;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $movies = Movie::all();
         $theaters = Theater::all();
-        $screens = Screen::all();
-        return view('admin.showtimes.create', compact('movies', 'theaters', 'screens'))
+        $rooms = Room::all();
+        return view('admin.showtimes.create', compact('movies', 'theaters', 'rooms'))
             ->with('title', "Create Showtime");;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $showtime = Showtime::create($request->all());
         return redirect()->route('admin.showtimes.index')->with('success', 'Showtime created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Showtime  $showtime
-     * @return \Illuminate\Http\Response
-     */
     public function show(Showtime $showtime)
     {
-        $showtime->load('movie', 'theater', 'screen'); // Eager load movie, theater, and screen data
-        return view('admin.showtimes.show', compact('showtime'));
+        $showtime->load('movie', 'theater', 'room'); // Eager load movie, theater, and screen data
+        return view('admin.showtimes.show', compact('showtime'))
+            ->with('title', 'Movie Details');
     }
 
     /**
@@ -68,11 +49,11 @@ class ShowtimeController extends Controller
      */
     public function edit(Showtime $showtime)
     {
-        $showtime->load('movie', 'theater', 'screen'); // Eager load movie, theater, and screen data
+        $showtime->load('movie', 'theater', 'room');
         $movies = Movie::all();
         $theaters = Theater::all();
-        $screens = Screen::all();
-        return view('admin.showtimes.edit', compact('showtime', 'movies', 'theaters', 'screens'))
+        $rooms = Room::all();
+        return view('admin.showtimes.edit', compact('showtime', 'movies', 'theaters', 'rooms'))
             ->with('title', "Update Showtime");;
     }
 
@@ -100,18 +81,25 @@ class ShowtimeController extends Controller
         $showtime->delete();
         return redirect()->route('admin.showtimes.index')->with('success', 'Showtime deleted successfully!');
     }
+
     public function getShowtimes(Request $request)
     {
 
         $date = $request->input('date');
-        $theater = $request->input('theater');
+        $theaterId = $request->input('theaterId');
         $movieId = $request->input('movieId');
 
-        $showtimes = ShowTime::with(['theater', 'screen'])
+        $showtimesQuery = ShowTime::with(['theater', 'room'])
             ->where('movie_id', $movieId)
-            ->whereDate('showtime', $date)
-            ->get();
+            ->whereDate('showtime', $date);
+
+        if ($theaterId) {
+            $showtimesQuery->where('theater_id', $theaterId);
+        }
+
+        $showtimes = $showtimesQuery->get();
 
         return view('partials.showtimes', compact('showtimes', 'movieId'));
+        // return view('test.show', compact('date', 'theater', 'movieId'));
     }
 }

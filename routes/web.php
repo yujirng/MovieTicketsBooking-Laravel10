@@ -12,6 +12,7 @@ use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Middleware\ShareGenres;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,6 +85,16 @@ Route::get('/allmovies', [MovieController::class, 'allMovies'])->name('app.movie
 Route::get('/about', [AppController::class, 'about'])->name('app.about');
 Route::get('/contacts', [AppController::class, 'contacts'])->name('app.contacts');
 Route::get('/feedback', [AppController::class, 'feedback'])->name('app.feedback');
+
+Route::middleware([ShareGenres::class])->group(function () {
+    Route::get('/', [MovieController::class, 'indexMovie'])->name('app.index');
+    Route::get('/details/{id}', [MovieController::class, 'detailMovie'])->name('movie.details');
+    Route::get('/allmovies', [MovieController::class, 'allMovies'])->name('app.movies.all');
+    Route::get('/about', [AppController::class, 'about'])->name('app.about');
+    Route::get('/contacts', [AppController::class, 'contacts'])->name('app.contacts');
+    Route::get('/feedback', [AppController::class, 'feedback'])->name('app.feedback');
+});
+
 Route::get('/movies/fetch', [MovieController::class, 'fetch'])->name('movies.fetch');
 Route::get('/showtimes/fetch', [ShowtimeController::class, 'getShowtimes'])->name('showtimes.fetch');
 
@@ -92,10 +103,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/payment/process', [AppController::class, 'showBookingSummary'])->name('payment');
     Route::post('/ticket_show', [AppController::class, 'paymentForm'])->name('paymentForm');
     Route::post('/showticket', [AppController::class, 'showTicket'])->name('showticket');
+    Route::post('payment/online', [BookingController::class, 'createPayment'])->name('payment.online');
+    Route::get("vnpay/return", [BookingController::class, 'vnpayReturn'])->name('vnpay.return');
 });
-
-
-
 
 // Route::get('/login', [AppController::class, 'seatbooking'])->name('login');
 

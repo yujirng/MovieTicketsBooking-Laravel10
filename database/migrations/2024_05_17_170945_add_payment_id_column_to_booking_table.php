@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('screens', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('theater_id');
-            $table->foreign('theater_id')->references('id')->on('theaters');
-            $table->text('screen_name')->nullable();
-            $table->timestamps();
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->unsignedBigInteger('payment_id');
+            $table->foreign('payment_id')->references('id')->on('payments');
         });
     }
 
@@ -25,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('screens');
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->dropForeign(['payment_id']);
+            $table->dropColumn('payment_id');
+        });
     }
 };

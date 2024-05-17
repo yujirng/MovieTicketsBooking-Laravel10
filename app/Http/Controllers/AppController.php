@@ -33,15 +33,6 @@ class AppController extends Controller
         return view('app.about', compact('genres'));
     }
 
-    // public function seatbooking(Request $request)
-    // {
-    //     $movieId = $request->input('movieId');
-    //     $showtimeId = $request->input('showtimeId');
-
-    //     return view('app.bookings.seatbooking', compact('movieId', 'showtimeId'));
-    // }
-
-
     public function seatbooking(Request $request)
     {
         if ($request->has('showtimeId') && $request->has('movieId')) {
@@ -55,10 +46,10 @@ class AppController extends Controller
                 ->flatMap(fn ($seats) => explode(',', $seats))
                 ->toArray();
 
-            $showtimeInfo = ShowTime::select('movies.title', 'movies.image', 'showtimes.price', DB::raw('DATE_FORMAT(showtimes.showtime, "%Y-%m-%d") AS show_date'), DB::raw('DATE_FORMAT(showtimes.showtime, "%H:%i") AS show_time'))
+            $showtimeInfo = ShowTime::select('movies.title', 'movies.image', 'rooms.screen_name', 'showtimes.price', DB::raw('DATE_FORMAT(showtimes.showtime, "%Y-%m-%d") AS show_date'), DB::raw('DATE_FORMAT(showtimes.showtime, "%H:%i") AS show_time'))
                 ->join('movies', 'showtimes.movie_id', '=', 'movies.id')
+                ->join('rooms', 'showtimes.room_id', '=', 'rooms.id')
                 ->where('showtimes.id', $showtimeId)
-                ->with('rooms.screen_name')
                 ->first();
 
             if (!$showtimeInfo) {
@@ -95,7 +86,6 @@ class AppController extends Controller
         $totalPrice = $request->input('total_price');
 
         $bookingInfo = Showtime::where('id', $showtimeId)
-            // ->with('movie', 'theater', 'screen')
             ->with('movie', 'theater', 'room')
             ->firstOrFail();
 
@@ -124,40 +114,51 @@ class AppController extends Controller
         ]);
     }
 
+    // public function paymentForm(Request $request)
+    // {
+
+    //     $showtimeId = $request->input('showtimeId');
+    //     $userId = $request->input('userId');
+    //     $seats = $request->input('seats');
+    //     $totalSeats = $request->input('total-seats');
+    //     $totalPrice = $request->input('total-price');
+    //     $bookingDate = $request->input('booking-date');
+
+    //     $booking = new Booking();
+    //     $booking->user_id = $userId;
+    //     $booking->seats = $seats;
+    //     $booking->total_seats = $totalSeats;
+    //     $booking->booking_date = $bookingDate;
+    //     $booking->showtime_id = $showtimeId;
+    //     $booking->total_price = $totalPrice;
+    //     $booking->save();
+
+    //     $bookingId = $booking->id;
+
+    //     $bookingInfo = Booking::where('id', $bookingId)
+    //         ->with('showtime.movie', 'showtime.theater', 'showtime.room', 'user')
+    //         ->first();
+
+    //     return view('app.booking.ticketshow', [
+    //         'bookingInfo' => $bookingInfo
+    //     ]);
+    // }
+
     public function paymentForm(Request $request)
     {
+        $bookingInfo = $request->all();
 
-        $showtimeId = $request->input('showtimeId');
-        $userId = $request->input('userId');
-        $seats = $request->input('seats');
-        $totalSeats = $request->input('total-seats');
-        $totalPrice = $request->input('total-price');
-        $bookingDate = $request->input('booking-date');
+        $totalMoney = $bookingInfo['total-price'];
 
-        $booking = new Booking();
-        $booking->user_id = $userId;
-        $booking->seats = $seats;
-        $booking->total_seats = $totalSeats;
-        $booking->booking_date = $bookingDate;
-        $booking->showtime_id = $showtimeId;
-        $booking->total_price = $totalPrice;
-        $booking->save();
+        session(['info_booking' => $bookingInfo]);
 
-        $bookingId = $booking->id;
-
-        $bookingInfo = Booking::where('id', $bookingId)
-            ->with('showtime.movie', 'showtime.theater', 'showtime.screen', 'user')
-            ->first();
-
-        return view('app.booking.ticketshow', [
-            'bookingInfo' => $bookingInfo
-        ]);
+        return view('app.vnpay.index', compact('totalMoney'));
     }
 
     public function showTicket(Request $request)
     {
         $bookingInfo = Booking::where('id', $request->bookingId)
-            ->with('showtime.movie', 'showtime.theater', 'showtime.screen', 'user')
+            ->with('showtime.movie', 'showtime.theater', 'showtime.room', 'user')
             ->first();
 
         return view('app.booking.ticketshow', [
@@ -222,7 +223,7 @@ class AppController extends Controller
         $genres = Genre::pluck('genre_name');
 
         $bookingList = Booking::where('user_id', $user->id)
-            ->with('showtime.movie', 'showtime.theater', 'showtime.screen', 'user')
+            ->with('showtime.movie', 'showtime.theater', 'showtime.room', 'user')
             ->get();
 
         return view('app.user.bookinghistory', compact('bookingList', 'user', 'genres'));
@@ -231,12 +232,14 @@ class AppController extends Controller
     public function showUserNotifications()
     {
         $user = Auth::user();
-        return view('app.user.notifications', compact('user'));
+        $genres = Genre::pluck('genre_name');
+        return view('app.user.notifications', compact('user', 'genres'));
     }
 
     public function showUserGifts()
     {
         $user = Auth::user();
-        return view('app.user.gifts', compact('user'));
+        $genres = Genre::pluck('genre_name');
+        return view('app.user.gifts', compact('user', 'genres'));
     }
 }

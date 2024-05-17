@@ -330,11 +330,11 @@
 
             function fetchShowtimes(selectedDate, selectedTheater, movieId) {
                 $.ajax({
-                    url: 'ajax/filter_showtimes.php',
+                    url: '{{ route('showtimes.fetch') }}',
                     method: 'GET',
                     data: {
                         date: selectedDate,
-                        theater: selectedTheater,
+                        theaterId: selectedTheater,
                         movieId: movieId
                     },
                     success: function(response) {

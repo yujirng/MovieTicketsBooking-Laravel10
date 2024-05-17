@@ -157,29 +157,6 @@ class MovieController extends Controller
         return view('app.movies.all', compact('genres', 'languages'));
     }
 
-    public function fetchMovies(Request $request)
-    {
-        $search = $request->get('search');
-        $genreIds = $request->get('genre_id');
-        $languages = $request->get('language');
-
-        $movies = Movie::where('status', 1)
-            ->when($search, function ($query, $search) {
-                return $query->where('title', 'like', "%$search%");
-            })
-            ->when($genreIds, function ($query, $genreIds) {
-                return $query->whereIn('genre_id', $genreIds);
-            })
-            ->when($languages, function ($query, $languages) {
-                return $query->whereIn('language', $languages);
-            })
-            ->get();
-
-        return response()->json([
-            'movies' => $movies->toArray(),
-        ], 200);
-    }
-
     public function fetch(Request $request)
     {
         $search = $request->input('search');

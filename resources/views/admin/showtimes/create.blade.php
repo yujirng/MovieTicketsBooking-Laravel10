@@ -30,10 +30,10 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="screenId">Screen:</label>
-            <select class="form-control" id="screenId" name="screen_id">
-                @foreach ($screens as $screen)
-                    <option value="{{ $screen->id }}">{{ $screen->screen_name }}</option>
+            <label for="roomId">Screen:</label>
+            <select class="form-control" id="roomId" name="room_id">
+                @foreach ($rooms as $room)
+                    <option value="{{ $room->id }}">{{ $room->screen_name }}</option>
                 @endforeach
             </select>
         </div>

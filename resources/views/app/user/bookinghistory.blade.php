@@ -30,7 +30,7 @@
                                         <td>{{ $booking->showtime->movie->title }}</td>
                                         <td>{{ $booking->showtime->theater->theater_name }}</td>
                                         <td>{{ $booking->total_price }}</td>
-                                        <td>{{ $booking->showtime->screen->screen_name }}</td>
+                                        <td>{{ $booking->showtime->room->screen_name }}</td>
                                         <td>
                                             <form action="{{ route('showticket', ['bookingId' => $booking->id]) }}"
                                                 method="POST">

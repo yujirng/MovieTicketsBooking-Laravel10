@@ -21,9 +21,8 @@
                     <td>{{ $showtime->id }}</td>
                     <td>{{ $showtime->movie->title }}</td>
                     <td>{{ $showtime->theater->theater_name }}</td>
-                    <td>{{ $showtime->screen->screen_name }}</td>
-                    {{-- <td>{{ $showtime->showtime->format('Y-m-d H:i:s') }}</td> --}}
-                    <td>{{ FunctionHelper::formatDateAndTimeFull($showtime->showtime) }}</td>
+                    <td>{{ $showtime->room->screen_name }}</td>
+                    <td>{{ FunctionHelper::formatFullDateTime($showtime->showtime) }}</td>
                     <td>{{ $showtime->price }}</td>
                     <td>
                         <a href="{{ route('admin.showtimes.show', $showtime) }}" class="btn btn-sm btn-info">View</a>

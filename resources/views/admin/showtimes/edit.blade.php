@@ -35,16 +35,16 @@
         <div class="form-group">
             <label for="screenId">Screen:</label>
             <select class="form-control" id="screenId" name="screen_id">
-                @foreach ($screens as $screen)
-                    <option value="{{ $screen->id }}" @if ($screen->id == $showtime->screen_id) selected @endif>
-                        {{ $screen->screen_name }}</option>
+                @foreach ($rooms as $room)
+                    <option value="{{ $room->id }}" @if ($room->id == $showtime->room_id) selected @endif>
+                        {{ $room->screen_name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="form-group">
             <label for="showtime">Showtime:</label>
             <input type="datetime-local" class="form-control" id="showtime" name="showtime"
-                value="{{ FunctionHelper::formatDateAndTimeFull($showtime->showtime) }}">
+                value="{{ FunctionHelper::formatDateTimeInput($showtime->showtime) }}">
         </div>
         <div class="form-group">
             <label for="price">Price:</label>

@@ -23,7 +23,7 @@ class FunctionHelper
         }
     }
 
-    public static function formatDateAndTimeFull($dateTimeString)
+    public static function formatFullDateTime($dateTimeString)
     {
         if (!$dateTimeString) {
             return '';
@@ -35,5 +35,30 @@ class FunctionHelper
         } catch (\Exception $e) {
             return $dateTimeString;
         }
+    }
+
+    public static function formatDateTimeInput($dateTimeString)
+    {
+        if (!$dateTimeString) {
+            return '';
+        }
+
+        try {
+            $dateTime = Carbon::parse($dateTimeString);
+            return $dateTime->format('Y-m-d\TH:i');
+        } catch (\Exception $e) {
+            return $dateTimeString;
+        }
+    }
+
+    public static function randString($length)
+    {
+        $chars = "abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ0123456789";
+        $str = '';
+        $size = strlen($chars);
+        for ($i = 0; $i < $length; $i++) {
+            $str .= $chars[rand(0, $size - 1)];
+        }
+        return $str;
     }
 }
