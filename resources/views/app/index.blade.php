@@ -1,13 +1,55 @@
 @extends('layouts.app.main')
 
+@section('style')
+    <link rel="stylesheet" href="{{ asset('template/app/css/slick.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('template/app/css/slick-theme.css') }}" type="text/css">
+
+    <style>
+        .slide-container {
+            width: 1400px;
+            margin: 0 50px;
+        }
+    </style>
+@endsection
+
 @section('content')
-    <div class="container">
+    {{-- <div class="container-fluid my-4">
         <img src="{{ asset('template/app/images/theatre_2.jpg') }}" alt="" class="image-resize"
             style="width: 100%; height: 400px;">
+    </div> --}}
+
+    <div class="container-fluid my-4">
+        <div class="main-carousel">
+            <a href="{{ route('movie.details', 14) }}">
+                <div class="p-1 slide-container">
+                    <img src="{{ Storage::url('slider_images/1.jpg') }}" alt="">
+                </div>
+            </a>
+            <a href="{{ route('movie.details', 13) }}">
+                <div class="p-1 slide-container">
+                    <img src="{{ Storage::url('slider_images/2.jpg') }}" alt="">
+                </div>
+            </a>
+            <a href="{{ route('movie.details', 19) }}">
+                <div class="p-1 slide-container">
+                    <img src="{{ Storage::url('slider_images/3.jpg') }}" alt="">
+                </div>
+            </a>
+            <a href="{{ route('movie.details', 13) }}">
+                <div class="p-1 slide-container">
+                    <img src="{{ Storage::url('slider_images/4.jpg') }}" alt="">
+                </div>
+            </a>
+            <a href="{{ route('movie.details', 19) }}">
+                <div class="p-1 slide-container">
+                    <img src="{{ Storage::url('slider_images/5.jpg') }}" alt="">
+                </div>
+            </a>
+        </div>
     </div>
 
     <div class="container">
-        <h2 class="part-line">Running Movies</h2>
+        <h2 class="part-line my-5">Running Movies</h2>
         <div class="row">
             @foreach ($runningMovies as $movie)
                 <div class="col-lg-3 col-md-3 col-sm-6 mb-3">
@@ -35,7 +77,11 @@
                     </div>
                     <div class="row">
                         <h5 class="mt-2 mb-1 col-lg-8"><b>{{ $movie->title }}</b></h5>
-                        <h6 class="mt-2 mb-1 col-lg-2 offset-lg-1 pl-lg-0">{{ $movie->language }}</h6>
+                        @if ($movie->cens != 'P')
+                            <h4 class="mt-2 mb-1 col-lg-2 offset-lg-1 pl-lg-0">
+                                <span class="badge bg-warning">{{ $movie->cens }}</span>
+                            </h4>
+                        @endif
                     </div>
                 </div>
 
@@ -74,4 +120,23 @@
 
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('template/app/js/slick.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.main-carousel').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                dots: true,
+                centerMode: true,
+                focusOnSelect: true,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                variableWidth: true,
+            });
+        });
+    </script>
 @endsection

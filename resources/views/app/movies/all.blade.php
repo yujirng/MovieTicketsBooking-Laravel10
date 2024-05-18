@@ -51,7 +51,7 @@
                             </div>
                         </div>
 
-                        <div class="list-group px-3 py-1 mb-3">
+                        {{-- <div class="list-group px-3 py-1 mb-3">
                             <h3 class="part-line">Language</h3>
                             <div class="card border-0">
                                 @foreach ($languages as $language)
@@ -65,7 +65,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                 var action = 'fetch_data';
                 var search = $('#search').val();
                 var genre_id = get_filter('genre');
-                var language = get_filter('language');
+                // var language = get_filter('language');
                 var running = get_filter('running');
                 var upcomming = get_filter('upcomming');
                 $.ajax({
@@ -101,7 +101,7 @@
                         action: action,
                         search: search,
                         genre_id: genre_id,
-                        language: language,
+                        // language: language,
                         running: running,
                         upcomming: upcomming,
                     },

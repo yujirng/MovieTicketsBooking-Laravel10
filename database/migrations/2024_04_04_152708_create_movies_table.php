@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('genre_id')->references('id')->on('genres');
             $table->string('language', 100);
             $table->string('trailer_link', 255);
-            $table->string('description', 300);
+            $table->text('description');
             $table->string('image', 100);
             $table->integer('status');
             $table->integer('running');

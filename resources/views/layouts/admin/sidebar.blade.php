@@ -39,7 +39,8 @@
               with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
                     <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                        <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
                             General
                             <i class="right fas fa-angle-left"></i>
@@ -102,6 +103,24 @@
                                 <p>Admin</p>
                             </a>
                         </li> --}}
+                    </ul>
+                </li>
+                <li class="nav-item menu-open">
+                    <a href="#" class="nav-link active">
+                        {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                        <i class="nav-icon fas fa-chart-bar"></i>
+                        <p>
+                            Statistical
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Statistical</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 {{-- <li class="nav-item">

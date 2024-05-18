@@ -51,6 +51,20 @@ class FunctionHelper
         }
     }
 
+    public static function formatDateInput($dateTimeString)
+    {
+        if (!$dateTimeString) {
+            return '';
+        }
+
+        try {
+            $dateTime = Carbon::parse($dateTimeString);
+            return $dateTime->format('Y-m-d');
+        } catch (\Exception $e) {
+            return $dateTimeString;
+        }
+    }
+
     public static function randString($length)
     {
         $chars = "abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ0123456789";
@@ -60,5 +74,28 @@ class FunctionHelper
             $str .= $chars[rand(0, $size - 1)];
         }
         return $str;
+    }
+
+    public static function execPostRequest($url, $data)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data)
+            )
+        );
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        //execute post
+        $result = curl_exec($ch);
+        //close connection
+        curl_close($ch);
+        return $result;
     }
 }

@@ -1,8 +1,6 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>Edit Movie</h1>
-
     <form method="POST" action="{{ route('admin.movies.update', $movie) }}">
         @csrf
         @method('PUT')
@@ -19,7 +17,7 @@
         <div class="form-group">
             <label for="release_date">Release Date:</label>
             <input type="date" class="form-control" id="release_date" name="release_date"
-                value="{{ $movie->release_date->format('Y-m-d') }}" required>
+                value="{{ FunctionHelper::formatDateInput($movie->release_date) }}" required>
         </div>
         <div class="form-group">
             <label for="genre_id">Genre:</label>
@@ -31,9 +29,8 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="language">Language:</label>
-            <input type="text" class="form-control" id="language" name="language" value="{{ $movie->language }}"
-                required>
+            <label for="language">Cens:</label>
+            <input type="text" class="form-control" id="language" name="language" value="{{ $movie->cens }}" required>
         </div>
         <div class="form-group">
             <label for="trailer_link">Trailer Link:</label>
@@ -47,8 +44,9 @@
         <div class="form-group">
             <label for="image">Image (Current: {{ $movie->image }}):</label>
             <input type="file" class="form-control" id="image" name="image">
-            <img src="{{ Storage::url('public/movie_images/' . $movie->image) }}" alt="{{ $movie->title }}"
-                class="img-thumbnail">
+            <img src="{{ Storage::url('movie_images/' . $movie->image) }}" alt="{{ $movie->title }}" class="img-thumbnail"
+                width="300px">
+            <input type="hidden" value="{{ $movie->image }}" name="old_image">
         </div>
         <div class="form-group">
             <label for="status">Status:</label>

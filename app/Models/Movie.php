@@ -15,7 +15,7 @@ class Movie extends Model
         'director',
         'release_date',
         'genre_id',
-        'language',
+        'cens',
         'trailer_link',
         'description',
         'image',

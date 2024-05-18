@@ -32,9 +32,10 @@ class MovieController extends Controller
             'director' => 'required|string|max:100',
             'release_date' => 'required|date',
             'genre_id' => 'required|exists:genres,id',
-            'language' => 'required|string|max:100',
+            'cens' => 'required|string|max:10',
+            // 'language' => 'required|string|max:100',
             'trailer_link' => 'nullable|url|max:255',
-            'description' => 'required|string|max:300',
+            'description' => 'required|string',
             'image' => 'nullable|file|image|max:2048',
             'status' => 'required|integer',
             'running' => 'required|integer',
@@ -82,26 +83,30 @@ class MovieController extends Controller
             'director' => 'required|string|max:100',
             'release_date' => 'required|date',
             'genre_id' => 'required|exists:genres,id',
-            'language' => 'required|string|max:100',
+            'cens' => 'required|string|max:10',
+            // 'language' => 'required|string|max:100',
             'trailer_link' => 'nullable|url|max:255',
-            'description' => 'required|string|max:300',
+            'description' => 'required|string',
             'image' => 'nullable|file|image|max:2048',
             'status' => 'required|integer',
             'running' => 'required|integer',
+            'old_image' => 'required|string'
         ]);
+
+        // dd($request->all());
 
         if ($request->hasFile('image')) {
             $newImage = $request->file('image');
             $newImageName = time() . '.' . $newImage->getClientOriginalExtension();
             $newImage->storeAs('public/movie_images', $newImageName);
 
-            // Xóa ảnh cũ (nếu có)
             if ($movie->image) {
                 Storage::delete('public/movie_images/' . $movie->image);
             }
 
-            // Cập nhật tên ảnh mới vào dữ liệu request
             $request->request->add(['image' => $newImageName]);
+        } else {
+            $request->request->add(['image' => $request->old_image]);;
         }
 
         $movie->update($request->all());
@@ -137,7 +142,7 @@ class MovieController extends Controller
             abort(404);
         }
 
-        $currentMovies = Movie::where('running', 1)->limit(3)->get();
+        $currentMovies = Movie::where('status', 1)->limit(3)->get();
 
         $dates = [];
         for ($i = 0; $i < 4; $i++) {
@@ -153,15 +158,14 @@ class MovieController extends Controller
     public function allMovies(Request $request)
     {
         $genres = Genre::all()->pluck('genre_name', 'id');
-        $languages = Movie::distinct()->select('language')->where('status', 1)->orderBy('language', 'desc')->get()->pluck('language'); // Eloquent approach
-        return view('app.movies.all', compact('genres', 'languages'));
+        return view('app.movies.all', compact('genres'));
     }
 
     public function fetch(Request $request)
     {
         $search = $request->input('search');
         $genre_ids = $request->input('genre_id');
-        $languages = $request->input('language');
+        // $languages = $request->input('language');
         $running = $request->input('running');
         $upcomming = $request->input('upcomming');
 
@@ -175,9 +179,9 @@ class MovieController extends Controller
             $query->whereIn('genre_id', $genre_ids);
         }
 
-        if (!empty($languages)) {
-            $query->whereIn('language', $languages);
-        }
+        // if (!empty($languages)) {
+        //     $query->whereIn('language', $languages);
+        // }
 
         if (!empty($running) && !empty($upcomming)) {
         } else {

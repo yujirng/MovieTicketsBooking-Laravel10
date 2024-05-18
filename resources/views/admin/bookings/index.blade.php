@@ -25,9 +25,9 @@
                     <td>{{ $booking->total_seats }}</td>
                     {{-- <td>{{ $booking->booking_date->format('Y-m-d') }}</td> --}}
                     <td>{{ FunctionHelper::convertDate($booking->booking_date) }}</td>
-                    <td>{{ FunctionHelper::formatDateAndTimeFull($booking->showtime->showtime) }}</td>
+                    <td>{{ FunctionHelper::formatFullDateTime($booking->showtime->showtime) }}</td>
                     <td>{{ $booking->total_price }}</td>
-                    <td>
+                    {{-- <td>
                         <a href="{{ route('admin.bookings.show', $booking) }}" class="btn btn-sm btn-info">View</a>
                         <a href="{{ route('admin.bookings.edit', $booking) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('admin.bookings.destroy', $booking) }}" method="post" class="d-inline">
@@ -35,7 +35,7 @@
                             @method('DELETE')
                             <button class="btn btn-sm btn-danger">Delete</button>
                         </form>
-                    </td>
+                    </td> --}}
                 </tr>
             @endforeach
         </tbody>

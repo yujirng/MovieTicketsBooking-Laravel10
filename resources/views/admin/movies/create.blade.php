@@ -1,8 +1,6 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>Create Movie</h1>
-
     <form method="POST" enctype="multipart/form-data" action="{{ route('admin.movies.store') }}">
         @csrf
         <div class="form-group">
@@ -11,11 +9,13 @@
         </div>
         <div class="form-group">
             <label for="director">Director:</label>
-            <input type="text" class="form-control" id="director" name="director" required>
+            <input type="text" class="form-control" id="director" name="director" value="{{ old('director') }}"
+                required>
         </div>
         <div class="form-group">
             <label for="release_date">Release Date:</label>
-            <input type="date" class="form-control" id="release_date" name="release_date" required>
+            <input type="date" class="form-control" id="release_date" name="release_date"
+                value="{{ old('release_date') }}" required>
         </div>
         <div class="form-group">
             <label for="genre_id">Genre:</label>
@@ -27,19 +27,33 @@
         </div>
         <div class="form-group">
             <label for="language">Language:</label>
-            <input type="text" class="form-control" id="language" name="language" required>
+            <input type="text" class="form-control" id="language" name="language" value="{{ old('language') }}"
+                required>
         </div>
         <div class="form-group">
             <label for="trailer_link">Trailer Link:</label>
-            <input type="url" class="form-control" id="trailer_link" name="trailer_link">
+            <input type="url" class="form-control" id="trailer_link" name="trailer_link"
+                value="{{ old('trailer_link') }}">
         </div>
         <div class="form-group">
             <label for="description">Description:</label>
-            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            <textarea class="form-control" id="description" name="description" value="{{ old('description') }}" rows="3"
+                required></textarea>
         </div>
         <div class="form-group">
             <label for="image">Image:</label>
             <input type="file" class="form-control" id="image" name="image">
+        </div>
+        <div class="form-group">
+            <label for="cens">Movie Cens:</label>
+            <select class="form-control" id="cens" name="cens" required>
+                <option value="P">P</option>
+                <option value="K">K</option>
+                <option value="T13">T13</option>
+                <option value="T16">T16</option>
+                <option value="T18">T18</option>
+                <option value="C">C</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="status">Status:</label>

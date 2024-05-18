@@ -44,47 +44,57 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <p>Your Name: {{ $user->name }}</p>
-                            <p>Phone number: {{ $user->phone }}</p>
-                            <p>Email: {{ $user->email }}</p>
+                            <p>Your Name: {{ $bookingData['user']->name }}</p>
+                            <p>Phone number: {{ $bookingData['user']->phone }}</p>
+                            <p>Email: {{ $bookingData['user']->email }}</p>
                             <!-- Hiển thị các thông tin khác của người dùng -->
                             <!-- Hiển thị các thông tin về suất chiếu và phim -->
-                            <p>Movie Name: {{ $bookingInfo->movie->title }}</p>
-                            <p>Theater: {{ $bookingInfo->theater->theater_name }}</p>
-                            <p>Show Date: {{ $showDate }}</p>
-                            <p>Time: {{ $showTime }}</p>
+                            <p>Movie Name: {{ $bookingData['bookingInfo']->movie->title }}</p>
+                            <p>Theater: {{ $bookingData['bookingInfo']->theater->theater_name }}</p>
+                            <p>Show Date: {{ $bookingData['showDate'] }}</p>
+                            <p>Time: {{ $bookingData['showTime'] }}</p>
                             <!-- Hiển thị các thông tin khác của suất chiếu -->
                             <hr>
-                            <p>Seats: {{ $selectedSeats }}</p>
-                            <p>Total Seats: {{ $totalSeats }}</p>
+                            <p>Seats: {{ $bookingData['selectedSeats'] }}</p>
+                            <p>Total Seats: {{ $bookingData['totalSeats'] }}</p>
                             <p>Booking Date: {{ date('l, d-m-Y', strtotime('today')) }}</p>
+                            <p>Total Price: {{ $bookingData['totalPrice'] }} đ</p>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <form action="{{ route('paymentForm') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="showtimeId" value="{{ $showtimeId }}">
-                        <input type="hidden" name="userId" value="{{ $user->id }}">
-                        <input type="hidden" name="seats" value="{{ $selectedSeats }}">
-                        <input type="hidden" name="total-seats" value="{{ $totalSeats }}">
-                        <input type="hidden" name="total-price" value="{{ $totalPrice }}">
-                        <input type="hidden" name="booking-date" value="{{ date('Y-m-d', strtotime('today')) }}">
-                        <button type="submit" class="subscribe btn btn-primary btn-block shadow-sm">
-                            Confirm Payment
-                        </button>
-                    </form>
-                    <form action="{{ route('paymentMomo') }}" method="POST">
-                        <input type="hidden" name="showtimeId" value="{{ $showtimeId }}">
-                        <input type="hidden" name="userId" value="{{ $user->id }}">
-                        <input type="hidden" name="seats" value="{{ $selectedSeats }}">
-                        <input type="hidden" name="total-seats" value="{{ $totalSeats }}">
-                        <input type="hidden" name="total-price" value="{{ $totalPrice }}">
-                        <input type="hidden" name="booking-date" value="{{ date('Y-m-d', strtotime('today')) }}">
-                        <button type="submit" class="subscribe btn btn-primary btn-block shadow-sm">
-                            Thanh toán Momo
-                        </button>
-                    </form>
+                    <div class="row">
+                        <div class="col-6">
+                            <form action="{{ route('paymentForm') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="showtimeId" value="{{ $bookingData['showtimeId'] }}">
+                                <input type="hidden" name="userId" value="{{ $bookingData['user']->id }}">
+                                <input type="hidden" name="seats" value="{{ $bookingData['selectedSeats'] }}">
+                                <input type="hidden" name="total-seats" value="{{ $bookingData['totalSeats'] }}">
+                                <input type="hidden" name="total-price" value="{{ $bookingData['totalPrice'] }}">
+                                <input type="hidden" name="booking-date"
+                                    value="{{ date('Y-m-d', strtotime('today')) }}">
+                                <button type="submit" class="subscribe btn btn-primary btn-block shadow-sm">
+                                    Thanh toán VNPay
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-6">
+                            <form action="{{ route('payment.momo') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="showtimeId" value="{{ $bookingData['showtimeId'] }}">
+                                <input type="hidden" name="userId" value="{{ $bookingData['user']->id }}">
+                                <input type="hidden" name="seats" value="{{ $bookingData['selectedSeats'] }}">
+                                <input type="hidden" name="total-seats" value="{{ $bookingData['totalSeats'] }}">
+                                <input type="hidden" name="total-price" value="{{ $bookingData['totalPrice'] }}">
+                                <input type="hidden" name="booking-date"
+                                    value="{{ date('Y-m-d', strtotime('today')) }}">
+                                <button type="submit" class="subscribe btn btn-primary btn-block shadow-sm">
+                                    Thanh toán Momo
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

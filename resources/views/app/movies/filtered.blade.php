@@ -31,7 +31,7 @@
                     <div class="p-2 bg-dark text-white rounded text-info-container">
                         Title: {{ $movie->title }}<br />
                         Director: {{ $movie->director }}<br />
-                        Category: {{ $movie->genre_name }}<br /> Language: {{ $movie->language }}
+                        Category: {{ $movie->genre_name }}<br /> Language: {{ $movie->cens }}
                     </div>
                 </div>
             @endforeach

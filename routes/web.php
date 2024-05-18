@@ -103,8 +103,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/payment/process', [AppController::class, 'showBookingSummary'])->name('payment');
     Route::post('/ticket_show', [AppController::class, 'paymentForm'])->name('paymentForm');
     Route::post('/showticket', [AppController::class, 'showTicket'])->name('showticket');
-    Route::post('payment/online', [BookingController::class, 'createPayment'])->name('payment.online');
-    Route::get("vnpay/return", [BookingController::class, 'vnpayReturn'])->name('vnpay.return');
+    // VNPAY
+    Route::post('/payment/online', [BookingController::class, 'createPayment'])->name('payment.online');
+    Route::get("/vnpay/return", [BookingController::class, 'vnpayReturn'])->name('vnpay.return');
+    // MOMO
+    Route::post("/payment/momo", [BookingController::class, 'momoPayment'])->name('payment.momo');
+    Route::get("/payment/momo/checkout", [BookingController::class, 'momoPaymentCheckout'])->name('payment.momo.checkout');
 });
 
 // Route::get('/login', [AppController::class, 'seatbooking'])->name('login');

@@ -1,16 +1,6 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>Create New Showtime</h1>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </div>
-    @endif
-
     <form method="POST" action="{{ route('admin.showtimes.store') }}">
         @csrf
         <div class="form-group">

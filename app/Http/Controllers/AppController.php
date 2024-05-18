@@ -102,7 +102,7 @@ class AppController extends Controller
 
         $user = User::where('id', Auth::user()->id)->first();
 
-        return view('app.booking.summary', [
+        $bookingData = [
             'showtimeId' => $showtimeId,
             'bookingInfo' => $bookingInfo,
             'selectedSeats' => $selectedSeats,
@@ -110,8 +110,13 @@ class AppController extends Controller
             'totalPrice' => $totalPrice,
             'showDate' => $showDate,
             'showTime' => $showTime,
+            'bookingDate' => date('Y-m-d', strtotime('today')),
             'user' => $user,
-        ]);
+        ];
+
+        session(['bookingData' => $bookingData]);
+
+        return view('app.booking.summary', compact('bookingData'));
     }
 
     // public function paymentForm(Request $request)

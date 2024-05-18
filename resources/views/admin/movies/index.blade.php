@@ -10,7 +10,7 @@
                 <th>Director</th>
                 <th>Release Date</th>
                 <th>Genre</th>
-                <th>Language</th>
+                <th>Cens</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -21,7 +21,7 @@
                     <td>{{ $movie->director }}</td>
                     <td>{{ FunctionHelper::convertDate('2002-02-12', 'Y-m-d', 'd/m/Y') }}</td>
                     <td>{{ $movie->genre->genre_name }}</td>
-                    <td>{{ $movie->language }}</td>
+                    <td>{{ $movie->cens }}</td>
                     <td>
                         <a href="{{ route('admin.movies.show', $movie) }}" class="btn btn-sm btn-info">View</a>
                         <a href="{{ route('admin.movies.edit', $movie) }}" class="btn btn-sm btn-primary">Edit</a>

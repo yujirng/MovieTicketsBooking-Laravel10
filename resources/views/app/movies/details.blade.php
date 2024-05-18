@@ -147,7 +147,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <h4>Language: {{ $movie->language }}</h4>
+                                <h4><span class="bg-alert">{{ $movie->cens }}</span></h4>
                             </div>
                         </div>
                     </div>
