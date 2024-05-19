@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('movies', function (Blueprint $table) {
-            $table->dropColumn('language');
-            $table->string('cens', 10);
+        Schema::table('showtimes', function (Blueprint $table) {
+            $table->dropForeign(['theater_id']);
+            $table->dropColumn('theater_id');
         });
     }
 
@@ -22,9 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('movies', function (Blueprint $table) {
-            $table->dropColumn('cens');
-            $table->string('language', 30);
+        Schema::table('showtimes', function (Blueprint $table) {
+            //
         });
     }
 };

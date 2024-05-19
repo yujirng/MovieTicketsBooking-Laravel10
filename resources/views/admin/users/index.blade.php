@@ -24,16 +24,12 @@
                     <td>{{ $user->gender ? 'Male' : 'Female' }}</td>
                     <td>
                         <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-primary">Show</a>
-                        {{-- @can('edit-user', $user) --}}
                         <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary">Edit</a>
-                        {{-- @endcan --}}
-                        {{-- @can('delete-user', $user) --}}
-                        <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="d-inline">
+                        {{-- <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="d-inline">
                             @method('DELETE')
                             @csrf
                             <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                        {{-- @endcan --}}
+                        </form> --}}
                     </td>
                 </tr>
             @endforeach

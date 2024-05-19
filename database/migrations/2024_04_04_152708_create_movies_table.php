@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('release_date');
             $table->unsignedBigInteger('genre_id');
             $table->foreign('genre_id')->references('id')->on('genres');
-            $table->string('language', 100);
+            $table->string('language', 30);
             $table->string('trailer_link', 255);
             $table->text('description');
             $table->string('image', 100);

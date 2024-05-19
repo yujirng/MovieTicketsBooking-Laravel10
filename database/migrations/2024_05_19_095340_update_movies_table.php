@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('movies', function (Blueprint $table) {
-            $table->dropColumn('language');
-            $table->string('cens', 10);
+            $table->dropColumn('director');
+            $table->unsignedBigInteger('director_id');
+            $table->foreign('director_id')->references('id')->on('directors');
         });
     }
 
@@ -23,8 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('movies', function (Blueprint $table) {
-            $table->dropColumn('cens');
-            $table->string('language', 30);
+            $table->string('director', 100);
+            $table->dropForeign(['director_id']);
+            $table->dropColumn('director_id');
         });
     }
 };

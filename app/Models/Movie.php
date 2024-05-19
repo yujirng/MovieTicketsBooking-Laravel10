@@ -12,9 +12,9 @@ class Movie extends Model
 
     protected $fillable = [
         'title',
-        'director',
+        // 'director',
         'release_date',
-        'genre_id',
+        // 'genre_id',
         'cens',
         'trailer_link',
         'description',
@@ -23,9 +23,24 @@ class Movie extends Model
         'running',
     ];
 
-    public function genre()
+    // public function genre()
+    // {
+    //     return $this->belongsTo(Genre::class);
+    // }
+
+    public function genres()
     {
-        return $this->belongsTo(Genre::class);
+        return $this->belongsToMany(Genre::class, 'movie_genre');
+    }
+
+    public function directors()
+    {
+        return $this->belongsTo(Directors::class);
+    }
+
+    public function actors()
+    {
+        return $this->belongsToMany(Actors::class, 'movie_actor');
     }
 
     public function showTimes(): HasMany

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone', 15);
-            $table->string('birthday', 50);
+            $table->string('birthday', 30);
             $table->string('image', 100);
             $table->boolean('gender');
             $table->rememberToken();
