@@ -1,12 +1,12 @@
 @foreach ($showtimes as $showtime)
-    @if (!isset($currentTheater) || $showtime->theater->theater_name !== $currentTheater)
+    @if (!isset($currentTheater) || $showtime->room->theater->theater_name !== $currentTheater)
         @if (isset($currentTheater))
             </div>
             </div>
             </div>
         @endif
         @php
-            $currentTheater = $showtime->theater->theater_name;
+            $currentTheater = $showtime->room->theater->theater_name;
             $currentScreen = '';
         @endphp
         <div class="card my-3 border border-dark shadow-lg rounded">

@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{ $showtime->id }}</td>
                     <td>{{ $showtime->movie->title }}</td>
-                    <td>{{ $showtime->theater->theater_name }}</td>
+                    <td>{{ $showtime->room->theater->theater_name }}</td>
                     <td>{{ $showtime->room->screen_name }}</td>
                     <td>{{ FunctionHelper::formatFullDateTime($showtime->showtime) }}</td>
                     <td>{{ $showtime->price }}</td>

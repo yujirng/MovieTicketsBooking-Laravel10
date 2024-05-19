@@ -111,7 +111,7 @@
 
                             <div class="card-body">
                                 <h5 class="card-title">{{ $movie->title }}</h5>
-                                <p class="card-text">Director: {{ $movie->director }}</p>
+                                <p class="card-text">Director: {{ $movie->director->name }}</p>
                             </div>
                         </div>
                     </div>

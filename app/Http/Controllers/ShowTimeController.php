@@ -14,7 +14,7 @@ class ShowtimeController extends Controller
 
     public function index()
     {
-        $showtimes = Showtime::with('movie', 'theater', 'room')->get(); // Eager load movie, theater, and screen data
+        $showtimes = Showtime::with('movie', 'room')->get(); // Eager load movie, and screen data
         return view('admin.showtimes.index', compact('showtimes'))
             ->with('title', "Showtimes");;
     }
@@ -22,9 +22,8 @@ class ShowtimeController extends Controller
     public function create()
     {
         $movies = Movie::all();
-        $theaters = Theater::all();
         $rooms = Room::all();
-        return view('admin.showtimes.create', compact('movies', 'theaters', 'rooms'))
+        return view('admin.showtimes.create', compact('movies', 'rooms'))
             ->with('title', "Create Showtime");;
     }
 
@@ -36,7 +35,7 @@ class ShowtimeController extends Controller
 
     public function show(Showtime $showtime)
     {
-        $showtime->load('movie', 'theater', 'room'); // Eager load movie, theater, and screen data
+        $showtime->load('movie', 'room'); // Eager load movie, theater, and screen data
         return view('admin.showtimes.show', compact('showtime'))
             ->with('title', 'Movie Details');
     }
@@ -49,7 +48,7 @@ class ShowtimeController extends Controller
      */
     public function edit(Showtime $showtime)
     {
-        $showtime->load('movie', 'theater', 'room');
+        $showtime->load('movie', 'room');
         $movies = Movie::all();
         $theaters = Theater::all();
         $rooms = Room::all();
@@ -89,12 +88,15 @@ class ShowtimeController extends Controller
         $theaterId = $request->input('theaterId');
         $movieId = $request->input('movieId');
 
-        $showtimesQuery = ShowTime::with(['theater', 'room'])
+        $showtimesQuery = ShowTime::with('room')
             ->where('movie_id', $movieId)
             ->whereDate('showtime', $date);
 
         if ($theaterId) {
-            $showtimesQuery->where('theater_id', $theaterId);
+            $showtimesQuery->whereHas('room.theater', function ($query) use ($theaterId) {
+                $query->where('theater_id', $theaterId);
+            });
+            // $showtimesQuery->where('theater_id', $theaterId);
         }
 
         $showtimes = $showtimesQuery->get();

@@ -77,7 +77,7 @@
         @media (min-width: 992px) {
             .movie-detail-image {
                 position: absolute;
-                top: -120px;
+                top: -50px;
                 left: -30px;
                 border: 5px solid white;
             }
@@ -94,6 +94,10 @@
                 object-fit: contain;
             }
 
+        }
+
+        .movie-detail-block {
+            height: 475px;
         }
     </style>
 @endsection
@@ -128,73 +132,50 @@
     <div class="col-lg-10 offset-lg-1">
         <div class="row feature design">
             <div class="col-lg-8">
-                <div class="row">
+                <div class="row movie-detail-block">
                     <div class="offset-lg-1 col-lg-4"><img src="{{ Storage::url('movie_images/' . $movie->image) }}"
                             class="rounded shadow-lg movie-detail-image resize-detail object-fit-cover" alt=""
                             width="100%"></div>
                     <div class="col-lg-7 mb-lg-5">
                         <div>
-                            <h2 class="mt-3">{{ $movie->title }}</h2>
-                            <div class="mb-4">
+                            <h2 class="mt-3">{{ $movie->title }}
+                                @if ($movie->cens != 'P')
+                                    <span class="badge badge-warning">{{ $movie->cens }}</span>
+                                @endif
+                            </h2>
+                            <div class="my-3">
                                 <ion-icon class="text-warning" name="calendar-outline"></ion-icon>
                                 {{ $movie->release_date }}
                             </div>
-                            <div class="mb-4">
-                                <h4>Director: {{ $movie->director }}</h4>
+                            <div class="mb-2">
+                                <h4><span class="text-dark mr-3">Genres:</span>
+                                    @foreach ($movie->genres as $genre)
+                                        <a class="btn btn-outline-warning text-dark font-weight"
+                                            href="#">{{ $genre->genre_name }}</a>
+                                    @endforeach
+                                </h4>
                             </div>
-                            <div class="mb-4">
-                                <h4>Category: {{ $movie->genre_name }}</h4>
+                            <div class="mb-2">
+                                <h4><span class="text-dark mr-3">Director:</span>
+                                    <a class="btn btn-outline-warning text-dark font-weight"
+                                        href="#">{{ $movie->director->name }}</a>
+                                </h4>
                             </div>
-
-                            <div class="mb-4">
-                                <h4><span class="bg-alert">{{ $movie->cens }}</span></h4>
+                            <div class="mb-2">
+                                <h4><span class="text-dark mr-3">Actors:</span>
+                                    @foreach ($movie->actors as $actor)
+                                        <a class="btn btn-outline-warning text-dark font-weight"
+                                            href="#">{{ $actor->name }}</a>
+                                    @endforeach
+                                </h4>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row my-5">
-                    @if ($movie->running == 1)
-                        <div class="col-md-12">
-                            <div class="row px-sm-4 px-lg-0">
-                                <div class="col-md-12 pb-2 mb-4 text-black border-bottom border-danger">
-                                    <h4>Showtime</h4>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center mb-4">
-                                <div class="col-md-12">
-                                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                                        <div class="collapse navbar-collapse" id="navbarNav">
-                                            <ul class="navbar-nav">
-                                                @foreach ($dates as $date)
-                                                    <li class="nav-item rounded mr-3">
-                                                        <button class="nav-link date-btn font-weight-bold"
-                                                            data-date="{{ $date['date'] }}">
-                                                            {{ $date['formatted_date'] }}
-                                                        </button>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-
-                                            <div class="ml-auto d-flex">
-                                                <select id="theaterSelect" class="form-control selected-fix">
-                                                    <option value="">Select a Theater</option>
-                                                    @foreach ($movie->showTimes->pluck('theater.theater_name', 'theater.id') as $theaterId => $theaterName)
-                                                        <option value="{{ $theaterId }}">{{ $theaterName }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </nav>
-                                    <div class="col-md-12 mt-3" id="showtimes-section">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                </div>
                 <div class="row px-sm-4 px-lg-0 mb-sm-5 mb-lg-0">
-                    <div class="description">
-                        <h4>Description</h4>
+                    <div class="description mt-5">
+                        <h4 class="pl-3 text-dark mb-3 border-bottom border-danger border-3 pb-2 font-weight-bold">
+                            Description</h4>
                         <p>
                             <!--                                            Jeff Lang (Tobey Maguire), an OBGYN, and his wife Nealy (Elizabeth Banks), who owns a small-->
                             <!--                                            shop, live in Seattle with their two-year-old son named Miles. Considering a second child, they-->
@@ -206,6 +187,52 @@
                         </p>
                     </div>
                 </div>
+                @if (!$theaters->isEmpty())
+                    <div class="row mb-5">
+                        @if ($movie->status == 1)
+                            <div class="col-md-12">
+                                <div class="row px-sm-4 px-lg-0">
+                                    <div class="col-md-12 pb-2 mb-4 text-black border-bottom border-danger border-3">
+                                        <h4 class="font-weight-bold">Showtimes</h4>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mb-4">
+                                    <div class="col-md-12">
+                                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                            <div class="collapse navbar-collapse" id="navbarNav">
+                                                <ul class="navbar-nav">
+                                                    @foreach ($dates as $date)
+                                                        <li class="nav-item mr-3">
+                                                            <button class="nav-link date-btn font-weight-bold rounded"
+                                                                data-date="{{ $date['date'] }}">
+                                                                {{ $date['formatted_date'] }}
+                                                            </button>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+
+                                                <div class="ml-auto d-flex">
+                                                    <select id="theaterSelect" class="form-control selected-fix">
+                                                        <option data-display="Select a Theater">Select a Theater</option>
+
+                                                        @foreach ($theaters as $theaterId => $theaterName)
+                                                            <option value="{{ $theaterId }}">
+                                                                {{ $theaterName }}
+                                                            </option>
+                                                        @endforeach
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </nav>
+                                        <div class="col-md-12 mt-3" id="showtimes-section">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                @endif
             </div>
             <div class="col-lg-4 p-lg-3">
                 <div class="h4 pb-2 mb-4 text-black border-bottom border-danger">
@@ -224,7 +251,7 @@
                                                 <div class="overlay-buttons">
                                                     <div class="col">
                                                         <div class="row">
-                                                            <a href="movie_details.php?pass={{ $currentMovie->id }}"
+                                                            <a href="{{ route('movie.details', $currentMovie->id) }}"
                                                                 class="btn btn-primary mx-auto overlay-button">
                                                                 <i class="fa fa-ticket"></i>
                                                                 Book Now
@@ -308,7 +335,7 @@
                     selectedDate = todayDate;
                 }
 
-                console.log(selectedTheater + ' ' + selectedDate + ' ' + movieId);
+                //console.log(selectedTheater + ' ' + selectedDate + ' ' + movieId);
                 fetchShowtimes(selectedDate, selectedTheater, movieId);
             });
 

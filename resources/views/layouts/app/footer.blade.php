@@ -78,3 +78,5 @@
 <script src="{{ asset('template/app/js/mixitup.min.js') }}"></script>
 {{-- <script src="{{ asset('js/owl.carousel.min.js') }}"></script> --}}
 <script src="{{ asset('template/app/js/main.js') }}"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

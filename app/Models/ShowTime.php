@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShowTime extends Model
 {
@@ -13,23 +14,17 @@ class ShowTime extends Model
 
     protected $fillable = [
         'movie_id',
-        'theater_id',
         'room_id',
         'showtime',
         'price',
     ];
 
-    public function movie()
+    public function movie(): BelongsTo
     {
         return $this->belongsTo(Movie::class);
     }
 
-    public function theater()
-    {
-        return $this->belongsTo(Theater::class);
-    }
-
-    public function room()
+    public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
     }

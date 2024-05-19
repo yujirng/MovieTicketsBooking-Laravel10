@@ -135,8 +135,9 @@ class MovieController extends Controller
 
     public function detailMovie($id)
     {
-        $movie = Movie::with('showtimes')->find($id);
+        $movie = Movie::with(['showtimes.room.theater', 'genres', 'actors', 'director'])->find($id);
         $genres = Genre::pluck('genre_name');
+        $theaters = $movie->showTimes->pluck('room.theater.theater_name', 'room.theater.id');
 
         if (!$movie) {
             abort(404);
@@ -152,7 +153,11 @@ class MovieController extends Controller
             ];
         }
 
-        return view('app.movies.details', compact('movie', 'currentMovies', 'dates', 'genres'));
+        dd(date('Y-m-d'));
+
+        // dd($movie);
+
+        return view('app.movies.details', compact('movie', 'currentMovies', 'dates', 'genres', 'theaters'));
     }
 
     public function allMovies(Request $request)

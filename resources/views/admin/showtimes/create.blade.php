@@ -12,18 +12,11 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="theaterId">Theater:</label>
-            <select class="form-control" id="theaterId" name="theater_id">
-                @foreach ($theaters as $theater)
-                    <option value="{{ $theater->id }}">{{ $theater->theater_name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group">
             <label for="roomId">Screen:</label>
             <select class="form-control" id="roomId" name="room_id">
                 @foreach ($rooms as $room)
-                    <option value="{{ $room->id }}">{{ $room->screen_name }}</option>
+                    <option value="{{ $room->id }}">
+                        {{ $room->theater->theater_name . ' | ' . $room->room_name . ' | ' . $room->screen_name }}</option>
                 @endforeach
             </select>
         </div>
