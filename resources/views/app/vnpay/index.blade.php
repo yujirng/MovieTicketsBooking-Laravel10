@@ -24,15 +24,15 @@
         <h3>Tạo mới đơn hàng</h3>
         <div>
             <table class="table-responsive">
-                <form action="{{ route('payment.online') }}" id="create_form" method="post">
+                <form action="{{ route('payment.vnpay') }}" id="create_form" method="post">
                     @csrf
                     <div class="form-group">
                         <label for="language">
                             Loại hàng hóa
                         </label>
                         <select name="order_type" id="order_type">
-                            <option value="topup">Nạp tiền điện thoại</option>
                             <option value="billpayment">Thanh toán hóa đơn</option>
+                            <option value="topup">Nạp tiền điện thoại</option>
                             <option value="fashion">Nạp tiền điện thoại</option>
                             <option value="other">Khác - Xem thêm tại VNPay</option>
                         </select>
@@ -42,15 +42,14 @@
                         <input class="form-control" id="amount" name="amount" type="number"
                             value="{{ $totalMoney }}" readonly>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="order_desc">Nội dung thanh toán</label>
                         <textarea class="form-control" cols="20" id="order_desc" name="order_desc" rows="2"
                             placeholder="Nội dung thanh toán"></textarea>
-                    </div>
+                    </div> --}}
                     <div class="form-group">
                         <label for="bank_code">Ngân hàng</label>
                         <select name="bank_code" id="bank_code" class="form-control">
-                            <option value="">Không chọn</option>
                             <option value="NCB">Ngân hàng NCB</option>
                         </select>
                     </div>
@@ -61,7 +60,8 @@
                             <option value="en">English</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary" id="btnPopup">Xác nhận thanh toán</button>
+                    <button type="submit" class="btn btn-primary" id="btnPopup" style="margin-right: 16px;">Xác nhận
+                        thanh toán</button>
                     <button type="button" onclick="history.back()" class="btn btn-primary" id="btnPopup">Quay trở
                         lại</button>
                 </form>

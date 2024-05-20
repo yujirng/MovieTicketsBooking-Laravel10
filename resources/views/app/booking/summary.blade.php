@@ -50,7 +50,7 @@
                             <!-- Hiển thị các thông tin khác của người dùng -->
                             <!-- Hiển thị các thông tin về suất chiếu và phim -->
                             <p>Movie Name: {{ $bookingData['bookingInfo']->movie->title }}</p>
-                            <p>Theater: {{ $bookingData['bookingInfo']->theater->theater_name }}</p>
+                            <p>Theater: {{ $bookingData['bookingInfo']->room->theater->theater_name }}</p>
                             <p>Show Date: {{ $bookingData['showDate'] }}</p>
                             <p>Time: {{ $bookingData['showTime'] }}</p>
                             <!-- Hiển thị các thông tin khác của suất chiếu -->

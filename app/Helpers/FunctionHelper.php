@@ -23,6 +23,20 @@ class FunctionHelper
         }
     }
 
+    public static function convertDateWithWeekDay($dateString, $fromFormat = 'Y-m-d', $toFormat = 'd-m-Y')
+    {
+        if (!$dateString) {
+            return '';
+        }
+
+        try {
+            $date = Carbon::parse($dateString);
+            return $date->format('l, d/m/Y');
+        } catch (\Exception $e) {
+            return $dateString;
+        }
+    }
+
     public static function formatFullDateTime($dateTimeString)
     {
         if (!$dateTimeString) {

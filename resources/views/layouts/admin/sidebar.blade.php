@@ -69,6 +69,20 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('admin.directors.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.directors.index') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Directors</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.actors.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.actirs.index') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Actors</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('admin.movies.index') }}"
                                 class="nav-link {{ request()->routeIs('admin.movies.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
@@ -106,7 +120,7 @@
                     </ul>
                 </li>
                 <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                    <a href="#" class="nav-link">
                         {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
                         <i class="nav-icon fas fa-chart-bar"></i>
                         <p>

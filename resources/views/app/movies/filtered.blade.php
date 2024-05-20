@@ -11,7 +11,8 @@
                                 <div class="col">
                                     <div class="row">
                                         @if ($movie->running === 0)
-                                            <a href="" class="btn btn-primary mx-auto overlay-button disabled">
+                                            <a href="{{ route('movie.details', $movie->id) }}"
+                                                class="btn btn-primary mx-auto overlay-button">
                                                 <i class="fa fa-spinner"></i>
                                                 Upcomming
                                             </a>
@@ -29,9 +30,13 @@
                         </div>
                     </div>
                     <div class="p-2 bg-dark text-white rounded text-info-container">
-                        Title: {{ $movie->title }}<br />
-                        Director: {{ $movie->director }}<br />
-                        Category: {{ $movie->genre_name }}<br /> Language: {{ $movie->cens }}
+                        Title: {{ $movie->title }} @if ($movie->cens != 'P')
+                            <span class="badge badge-warning">{{ $movie->cens }}</span>
+                        @endif
+                        <br />
+                        Director: {{ $movie->director->name }}<br />
+                        Genres: {{ implode(', ', $movie->genres->pluck('genre_name')->toArray()) }}
+                        <br />
                     </div>
                 </div>
             @endforeach

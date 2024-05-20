@@ -46,9 +46,10 @@ class AppController extends Controller
                 ->flatMap(fn ($seats) => explode(',', $seats))
                 ->toArray();
 
-            $showtimeInfo = ShowTime::select('movies.title', 'movies.image', 'rooms.screen_name', 'showtimes.price', DB::raw('DATE_FORMAT(showtimes.showtime, "%Y-%m-%d") AS show_date'), DB::raw('DATE_FORMAT(showtimes.showtime, "%H:%i") AS show_time'))
+            $showtimeInfo = ShowTime::select('movies.title', 'movies.image', 'theaters.theater_name', 'rooms.room_name', 'rooms.screen_name', 'showtimes.price', DB::raw('DATE_FORMAT(showtimes.showtime, "%Y-%m-%d") AS show_date'), DB::raw('DATE_FORMAT(showtimes.showtime, "%H:%i") AS show_time'))
                 ->join('movies', 'showtimes.movie_id', '=', 'movies.id')
                 ->join('rooms', 'showtimes.room_id', '=', 'rooms.id')
+                ->join('theaters', 'rooms.theater_id', '=', 'theaters.id')
                 ->where('showtimes.id', $showtimeId)
                 ->first();
 
@@ -56,23 +57,22 @@ class AppController extends Controller
                 return redirect()->route('index');
             }
 
-            $movieTitle = $showtimeInfo->title;
-            $movieImage = $showtimeInfo->image;
-            $showDate = $showtimeInfo->show_date;
-            $showTime = $showtimeInfo->show_time;
-            $showPrice = $showtimeInfo->price;
-            $screen_name = $showtimeInfo->screen_name;
-
-            return view('app.booking.seatbooking', [
-                'movieTitle' => $movieTitle,
-                'movieImage' => $movieImage,
-                'showDate' => $showDate,
-                'showTime' => $showTime,
-                'showPrice' => $showPrice,
+            $ticketInfo = [
+                'movieTitle' => $showtimeInfo->title,
+                'movieImage' => $showtimeInfo->image,
+                'showDate' => $showtimeInfo->show_date,
+                'showTime' => $showtimeInfo->show_time,
+                'showPrice' => $showtimeInfo->price,
                 'showtimeId' => $showtimeId,
                 'occupiedSeats' => $occupiedSeats,
-                'screen_name' => $screen_name
-            ]);
+                'screen_name' => $showtimeInfo->screen_name,
+                'theater_name' => $showtimeInfo->theater_name,
+                'room_name' => $showtimeInfo->room_name,
+            ];
+
+            session()->put('ticketInfo', $ticketInfo);
+
+            return view('app.booking.seatbooking', compact('ticketInfo'));
         } else {
             return redirect()->route('index');
         }
@@ -86,7 +86,7 @@ class AppController extends Controller
         $totalPrice = $request->input('total_price');
 
         $bookingInfo = Showtime::where('id', $showtimeId)
-            ->with('movie', 'theater', 'room')
+            ->with('movie', 'room')
             ->firstOrFail();
 
         $showtimeString = $bookingInfo->showtime;
@@ -114,9 +114,10 @@ class AppController extends Controller
             'user' => $user,
         ];
 
+        $ticketInfo = session('ticketInfo');
         session(['bookingData' => $bookingData]);
 
-        return view('app.booking.summary', compact('bookingData'));
+        return view('app.booking.newsummary', compact('bookingData', 'ticketInfo'));
     }
 
     // public function paymentForm(Request $request)
@@ -149,7 +150,8 @@ class AppController extends Controller
     //     ]);
     // }
 
-    public function paymentForm(Request $request)
+
+    public function vnpayPayment(Request $request)
     {
         $bookingInfo = $request->all();
 
@@ -163,7 +165,7 @@ class AppController extends Controller
     public function showTicket(Request $request)
     {
         $bookingInfo = Booking::where('id', $request->bookingId)
-            ->with('showtime.movie', 'showtime.theater', 'showtime.room', 'user')
+            ->with('showtime.movie', 'showtime.room', 'showtime.room', 'user')
             ->first();
 
         return view('app.booking.ticketshow', [
@@ -246,5 +248,12 @@ class AppController extends Controller
         $user = Auth::user();
         $genres = Genre::pluck('genre_name');
         return view('app.user.gifts', compact('user', 'genres'));
+    }
+
+    public function setTimezone(Request $request)
+    {
+        $timezone = $request->timezone;
+        session(['timezone' => $timezone]);
+        return response()->json(['status' => 'success']);
     }
 }

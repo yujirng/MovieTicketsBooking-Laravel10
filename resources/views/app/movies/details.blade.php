@@ -1,6 +1,7 @@
 @extends('layouts.app.main')
 
 @section('style')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         .container h2 {
             text-transform: uppercase;

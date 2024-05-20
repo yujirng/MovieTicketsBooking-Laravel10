@@ -29,7 +29,7 @@
                 <div class="card">
                     <div class="card-header">
                         <center><img src="{{ asset('template/app/images/logo.png') }}" width="40%">
-                            <h6> {{ $bookingInfo->showtime->theater->theater_address }}</h6>
+                            <h6> {{ $bookingInfo->showtime->room->theater->theater_address }}</h6>
                         </center>
 
                         <table>
@@ -86,7 +86,7 @@
                                 <th style="padding-left: 30px;">Time</th>
                             </tr>
                             <tr>
-                                <td>{{ $bookingInfo->showtime->theater->theater_name }}</td>
+                                <td>{{ $bookingInfo->showtime->room->theater->theater_name }}</td>
                                 <td style="padding: 12px 2px 12px 60px">{{ $bookingInfo->booking_date }}</td>
                                 <td style="padding-left: 30px;"> {{ $bookingInfo->showtime->showtime }}</td>
                             </tr>

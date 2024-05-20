@@ -48,12 +48,12 @@ h2 {
 }
 
 .seat.selected,
-.seat-sample .selected {
-    background-color: #6feaf6;
+.seat-sample.selected {
+    background-color: #00FFFF;
 }
 
 .seat.occupied,
-.seat-sample .occupied {
+.seat-sample.occupied {
     background-color: #f59e0b;
 }
 

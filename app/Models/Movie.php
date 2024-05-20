@@ -12,12 +12,11 @@ class Movie extends Model
 
     protected $fillable = [
         'title',
-        // 'director',
         'release_date',
-        // 'genre_id',
         'cens',
         'trailer_link',
         'description',
+        'director_id',
         'image',
         'status',
         'running',
@@ -35,13 +34,13 @@ class Movie extends Model
 
     public function director()
     {
-        return $this->belongsTo(Directors::class);
+        return $this->belongsTo(Director::class);
     }
 
     public function actors()
     {
         // return $this->belongsToMany(Actors::class, 'movie_actor'); actors_id
-        return $this->belongsToMany(Actors::class, 'movie_actor', 'movie_id', 'actor_id');
+        return $this->belongsToMany(Actor::class, 'movie_actor', 'movie_id', 'actor_id');
     }
 
     public function showTimes(): HasMany

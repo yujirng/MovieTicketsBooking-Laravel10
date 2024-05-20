@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActorsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\BookingController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\ShowtimeController;
 use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DirectorsController;
 use App\Http\Middleware\ShareGenres;
 use Illuminate\Support\Facades\Route;
 
@@ -71,6 +73,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::resource('screens', ScreenController::class);
     Route::resource('showtimes', controller: ShowtimeController::class);
     Route::resource('bookings', controller: BookingController::class);
+    Route::resource('actors', controller: ActorsController::class);
+    Route::resource('directors', controller: DirectorsController::class);
     Route::resource('users', controller: UserController::class);
 
     Route::prefix('feedbacks')->group(function () {
@@ -100,11 +104,12 @@ Route::get('/showtimes/fetch', [ShowtimeController::class, 'getShowtimes'])->nam
 
 Route::middleware('auth')->group(function () {
     Route::get('/seatbooking', [AppController::class, 'seatbooking'])->name('seatbooking');
-    Route::post('/payment/process', [AppController::class, 'showBookingSummary'])->name('payment');
-    Route::post('/ticket_show', [AppController::class, 'paymentForm'])->name('paymentForm');
+    Route::post('/payment', [AppController::class, 'showBookingSummary'])->name('payment');
+    Route::post('/payment/process', [BookingController::class, 'paymentProcess'])->name('payment.process');
+    Route::post('/ticket_show', [AppController::class, 'vnpayPayment'])->name('payment.vnpay');
     Route::post('/showticket', [AppController::class, 'showTicket'])->name('showticket');
     // VNPAY
-    Route::post('/payment/online', [BookingController::class, 'createPayment'])->name('payment.online');
+    Route::post('/payment/vnpay', [BookingController::class, 'createPayment'])->name('payment.vnpay');
     Route::get("/vnpay/return", [BookingController::class, 'vnpayReturn'])->name('vnpay.return');
     // MOMO
     Route::post("/payment/momo", [BookingController::class, 'momoPayment'])->name('payment.momo');
@@ -122,3 +127,5 @@ Route::post('/change-password', [AppController::class, 'changePassword'])->name(
 
 Route::get('/notifications', [AppController::class, 'showUserNotifications'])->name('user.notifications');
 Route::get('/gifts', [AppController::class, 'showUserGifts'])->name('user.gifts');
+
+Route::post('/set-timezone', [AppController::class, 'setTimezone'])->name('set-timezone');

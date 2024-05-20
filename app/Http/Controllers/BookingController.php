@@ -135,6 +135,25 @@ class BookingController extends Controller
         return redirect($vnp_Url);
     }
 
+    public function paymentProcess(Request $request)
+    {
+        $bookingInfo = $request->all();
+
+        $totalMoney = $bookingInfo['total-price'];
+
+        session(['info_booking' => $bookingInfo]);
+
+        $paymentMethod = $request->paymentMethod;
+
+        if ($paymentMethod == 'momo') {
+            return $this->momoPayment();
+        } elseif ($paymentMethod == 'vnpay') {
+            return view('app.vnpay.index', compact('totalMoney'));
+        } else {
+            return redirect()->back()->with('error', "Invalid request!");
+        }
+    }
+
     public function vnpayReturn(Request $request)
     {
         $vnpayData = $request->all();
@@ -229,7 +248,7 @@ class BookingController extends Controller
         return view('app.vnpay.return', compact('vnpayData', 'secureHash', 'secureBool', 'bookingId'));
     }
 
-    public function momoPayment(Request $request)
+    public function momoPayment()
     {
         $bookingData = session()->get('bookingData');
         // $endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";

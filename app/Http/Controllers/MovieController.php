@@ -6,14 +6,18 @@ use App\Models\Movie;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Genre;
+use App\Models\Director;
+use App\Models\Actor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
 {
     public function index()
     {
-        $movies = Movie::with('genre')->paginate(10);
+        $movies = Movie::with('genres')->paginate(10);
         return view('admin.movies.index', compact('movies'))
             ->with('title', "Movies");;
     }
@@ -21,7 +25,10 @@ class MovieController extends Controller
     public function create()
     {
         $genres = Genre::all();
-        return view('admin.movies.create', compact('genres'))
+        $directors = Director::all();
+        $actors = Actor::all();
+        $censorshipOptions = ['P', 'K', 'T13', 'T16', 'T18', 'C'];
+        return view('admin.movies.create', compact('genres', 'directors', 'actors', 'censorshipOptions'))
             ->with('title', "Create Movie");;
     }
 
@@ -29,16 +36,16 @@ class MovieController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:100',
-            'director' => 'required|string|max:100',
             'release_date' => 'required|date',
-            'genre_id' => 'required|exists:genres,id',
             'cens' => 'required|string|max:10',
-            // 'language' => 'required|string|max:100',
             'trailer_link' => 'nullable|url|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|file|image|max:2048',
+            'image' => 'required|file|image|max:2048',
             'status' => 'required|integer',
             'running' => 'required|integer',
+            'director_id' => 'required|exists:directors,id',
+            'genres' => 'array|exists:genres,id',
+            'actors' => 'array|exists:actors,id',
         ]);
 
         try {
@@ -51,11 +58,17 @@ class MovieController extends Controller
                 $data['image'] = $imageName;
             }
 
-            Movie::create($data);
+            $movie = Movie::create($data);
+
+            // $movie->director()->associate($request->input('director_id'));
+            $movie->save();
+            $movie->genres()->sync($request->input('genres', []));
+            $movie->actors()->sync($request->input('actors', []));
+
 
             return redirect()->route('admin.movies.index')->with('success', 'Movie created successfully!');
         } catch (\Throwable $e) {
-            return back()->withInput()->withErrors(['error' => 'An error occurred while creating the movie. Please try again.']);
+            return back()->withInput()->withErrors(['error' => 'An error occurred while updating the movie. Please try again.']);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return back()->withInput()->withErrors($e->validator->errors());
         }
@@ -63,16 +76,19 @@ class MovieController extends Controller
 
     public function show(Movie $movie)
     {
-        $movie = $movie->load('genre');
+        $movie = $movie->load('genres', 'actors', 'director');
         return view('admin.movies.show', compact('movie'))
             ->with('title', "Movie Details");;
     }
 
     public function edit(Movie $movie)
     {
-        $genres = Genre::all(); // Get all genres for dropdown
-        $movie = $movie->load('genre'); // Eager load genre
-        return view('admin.movies.edit', compact('genres', 'movie'))
+
+        $genres = Genre::all();
+        $directors = Director::all();
+        $actors = Actor::all();
+        $censorshipOptions = ['P', 'K', 'T13', 'T16', 'T18', 'C'];
+        return view('admin.movies.edit', compact('movie', 'genres', 'directors', 'actors', 'censorshipOptions'))
             ->with('title', "Update Movie");;
     }
 
@@ -80,17 +96,17 @@ class MovieController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:100',
-            'director' => 'required|string|max:100',
+            'director_id' => 'required|exists:directors,id',
             'release_date' => 'required|date',
-            'genre_id' => 'required|exists:genres,id',
             'cens' => 'required|string|max:10',
-            // 'language' => 'required|string|max:100',
             'trailer_link' => 'nullable|url|max:255',
             'description' => 'required|string',
             'image' => 'nullable|file|image|max:2048',
             'status' => 'required|integer',
             'running' => 'required|integer',
-            'old_image' => 'required|string'
+            'old_image' => 'required|string',
+            'genres' => 'array|exists:genres,id',
+            'actors' => 'array|exists:actors,id',
         ]);
 
         // dd($request->all());
@@ -110,6 +126,10 @@ class MovieController extends Controller
         }
 
         $movie->update($request->all());
+        $movie->genres()->sync($request->input('genres', []));
+        // $movie->director()->associate($request->input('director_id'));
+        $movie->actors()->sync($request->input('actors', []));
+        $movie->save();
 
         return redirect()->route('admin.movies.index')->with('success', 'Movie updated successfully!');
     }
@@ -133,9 +153,12 @@ class MovieController extends Controller
     }
 
 
-    public function detailMovie($id)
+    // public function detailMovie($id)
+    public function detailMovie(Request $request)
     {
-        $movie = Movie::with(['showtimes.room.theater', 'genres', 'actors', 'director'])->find($id);
+        $movieId = $request->id;
+
+        $movie = Movie::with(['showtimes.room.theater', 'genres', 'actors', 'director'])->find($movieId);
         $genres = Genre::pluck('genre_name');
         $theaters = $movie->showTimes->pluck('room.theater.theater_name', 'room.theater.id');
 
@@ -146,14 +169,26 @@ class MovieController extends Controller
         $currentMovies = Movie::where('status', 1)->limit(3)->get();
 
         $dates = [];
+
+        // dd($timezone)
+
+        $currentDate = Carbon::now();
+
+        // for ($i = 0; $i < 4; $i++) {
+        //     $dates[] = [
+        //         'date' => date('Y-m-d', strtotime("+$i days")),
+        //         'formatted_date' => date('D, M j', strtotime("+$i days")),
+        //     ];
+        // }
+
         for ($i = 0; $i < 4; $i++) {
+            $date = $currentDate->copy()->addDays($i);
             $dates[] = [
-                'date' => date('Y-m-d', strtotime("+$i days")),
-                'formatted_date' => date('D, M j', strtotime("+$i days")),
+                'date' => $date->toDateString(),
+                'formatted_date' => $date->format('D, M j'),
             ];
         }
 
-        dd(date('Y-m-d'));
 
         // dd($movie);
 
