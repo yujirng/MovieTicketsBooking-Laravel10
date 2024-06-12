@@ -28,7 +28,8 @@
                         </div>
                         <h4 class="fs-4 card-title fw-bold mb-4">Register</h4>
                         @include('partials.notify')
-                        <form method="POST" action="{{ route('register') }}" class="needs-validation">
+                        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data"
+                            class="needs-validation">
                             @csrf
                             <div class="row">
                                 <div class="col-xl-6">

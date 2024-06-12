@@ -250,7 +250,7 @@ class BookingController extends Controller
 
     public function momoPayment()
     {
-        $bookingData = session()->get('bookingData');
+        $bookingInfo = session()->get('bookingData');
         // $endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
 
@@ -259,7 +259,7 @@ class BookingController extends Controller
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
         $orderId = time() . "";
         $orderInfo = "Thanh toán qua MoMo:" . $orderId;
-        $amount = (int) $bookingData['totalPrice'];
+        $amount = (int) $bookingInfo['totalPrice'];
         // $redirectUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b";
         // $ipnUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b";
         $redirectUrl = "http://localhost:8000/payment/momo/checkout";
@@ -328,12 +328,14 @@ class BookingController extends Controller
 
         $paymentData = $request->all();
 
-        $bookingData = session()->get('bookingData');
+        $bookingInfo = session()->get('bookingData');
+
+        // dd($bookingInfo);
 
         $dataPayment = [
             'p_transaction_id' => $paymentData['orderId'],
-            'p_user_id' => $bookingData['user']->id,
-            'p_money' => $bookingData['totalPrice'],
+            'p_user_id' => $bookingInfo['user']->id,
+            'p_money' => $bookingInfo['totalPrice'],
             'p_note' => $paymentData['orderInfo'],
             'p_vnp_response_code' => $paymentData['resultCode'],
             'p_code_vnpay' => $paymentData['orderId'],
@@ -346,12 +348,12 @@ class BookingController extends Controller
         $insertedPayment = Payment::create($dataPayment);
         $paymentId = $insertedPayment->id;
 
-        $showtimeId = $bookingData['showtimeId'];
-        $userId = $bookingData['user']->id;
-        $seats = $bookingData['selectedSeats'];
-        $totalSeats = $bookingData['totalSeats'];
-        $totalPrice = $bookingData['totalPrice'];
-        $bookingDate = $bookingData['bookingDate'];
+        $showtimeId = $bookingInfo['showtimeId'];
+        $userId = $bookingInfo['user']->id;
+        $seats = $bookingInfo['selectedSeats'];
+        $totalSeats = $bookingInfo['totalSeats'];
+        $totalPrice = $bookingInfo['totalPrice'];
+        $bookingDate = $bookingInfo['bookingDate'];
 
         $booking = new Booking();
         $booking->user_id = $userId;

@@ -96,6 +96,11 @@
                             <label for="newPassword">Mật khẩu mới:</label>
                             <input type="password" class="form-control" id="newPassword" name="newPassword" required>
                         </div>
+                        <div class="form-group">
+                            <label for="confirmNewPassword">Xác nhận mật khẩu mới:</label>
+                            <input type="password" class="form-control" id="confirmNewPassword"
+                                name="confirmNewPassword" required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>

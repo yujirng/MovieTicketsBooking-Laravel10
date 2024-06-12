@@ -37,9 +37,20 @@
                 data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
               with font-awesome or any other icon font library -->
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
-                        {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                <li class="nav-item">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                            {{-- <span class="right badge badge-danger">New</span> --}}
+                        </p>
+                    </a>
+                </li>
+                <li
+                    class="nav-item {{ request()->is('admin/movies*', 'admin/genres*', 'admin/theaters*', 'admin/rooms*', 'admin/screens*', 'admin/showtimes*', 'admin/bookings*', 'admin/actors*', 'admin/directors*', 'admin/users*') ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ request()->is('admin/movies*', 'admin/theaters*', 'admin/rooms*', 'admin/screens*', 'admin/showtimes*', 'admin/bookings*', 'admin/actors*', 'admin/directors*', 'admin/users*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
                             General
@@ -119,24 +130,35 @@
                         </li> --}}
                     </ul>
                 </li>
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link">
-                        {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
-                        <i class="nav-icon fas fa-chart-bar"></i>
+                <li class="nav-item {{ request()->is('admin/slider*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->is('admin/slider*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Statistical
+                            Others
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ route('admin.slider') }}"
+                                class="nav-link {{ request()->routeIs('admin.app.slider') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Statistical</p>
+                                <p>Slider</p>
                             </a>
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.statistical') }}"
+                        class="nav-link {{ request()->is('admin/statistical') ? 'active' : '' }}">
+                        {{-- <i class="nav-icon fas fa-tachometer-alt"></i> --}}
+                        <i class="nav-icon fas fa-chart-bar"></i>
+                        <p>
+                            Statistical
+                        </p>
+                    </a>
+                </li>
+
                 {{-- <li class="nav-item">
                     <a href="pages/widgets.html" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>

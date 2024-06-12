@@ -23,7 +23,7 @@
                     <td>{{ $user->birthday }}</td>
                     <td>{{ $user->gender ? 'Male' : 'Female' }}</td>
                     <td>
-                        <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-primary">Show</a>
+                        <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-info">Show</a>
                         <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary">Edit</a>
                         {{-- <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="d-inline">
                             @method('DELETE')

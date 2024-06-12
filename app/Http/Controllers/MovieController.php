@@ -116,14 +116,16 @@ class MovieController extends Controller
             $newImageName = time() . '.' . $newImage->getClientOriginalExtension();
             $newImage->storeAs('public/movie_images', $newImageName);
 
-            if ($movie->image) {
-                Storage::delete('public/movie_images/' . $movie->image);
-            }
+            // if ($movie->image) {
+            //     Storage::delete('public/movie_images/' . $movie->image);
+            // }
 
             $request->request->add(['image' => $newImageName]);
         } else {
             $request->request->add(['image' => $request->old_image]);;
         }
+
+        // dd($request->all);
 
         $movie->update($request->all());
         $movie->genres()->sync($request->input('genres', []));
@@ -216,7 +218,9 @@ class MovieController extends Controller
         }
 
         if (!empty($genre_ids)) {
-            $query->whereIn('genre_id', $genre_ids);
+            $query->whereHas('genres', function ($query) use ($genre_ids) {
+                $query->whereIn('id', $genre_ids);
+            });
         }
 
         // if (!empty($languages)) {

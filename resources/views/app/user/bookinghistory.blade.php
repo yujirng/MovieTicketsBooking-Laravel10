@@ -28,7 +28,7 @@
                                         <td>{{ $booking->seats }}</td>
                                         <td>{{ $booking->total_seats }}</td>
                                         <td>{{ $booking->showtime->movie->title }}</td>
-                                        <td>{{ $booking->showtime->theater->theater_name }}</td>
+                                        <td>{{ $booking->showtime->room->theater->theater_name }}</td>
                                         <td>{{ (int) $booking->total_price }}đ</td>
                                         <td>{{ $booking->showtime->room->screen_name }}</td>
                                         <td>

@@ -230,7 +230,8 @@ class AppController extends Controller
         $genres = Genre::pluck('genre_name');
 
         $bookingList = Booking::where('user_id', $user->id)
-            ->with('showtime.movie', 'showtime.theater', 'showtime.room', 'user')
+            ->with('showtime.movie', 'showtime.room.theater', 'user')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('app.user.bookinghistory', compact('bookingList', 'user', 'genres'));

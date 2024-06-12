@@ -62,7 +62,9 @@ Route::post('/admin/logout', [AdminController::class, 'destroy'])->name('admin.l
 
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
-    Route::get('/', [GenreController::class, 'index'])->name('index');
+    Route::redirect('/', '/admin/dashboard')->name('index');
+    // Route::get('/', [GenreController::class, 'index'])->name('index');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
     Route::resource('genres', GenreController::class);
     Route::get('genres/{genre}/delete', [GenreController::class, 'delete'])->name('genres.delete');
@@ -76,6 +78,10 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::resource('actors', controller: ActorsController::class);
     Route::resource('directors', controller: DirectorsController::class);
     Route::resource('users', controller: UserController::class);
+
+    Route::get('statistical', [AdminController::class, 'statistical'])->name('statistical');
+
+    Route::get('slider', [AdminController::class, 'slider'])->name('slider');
 
     Route::prefix('feedbacks')->group(function () {
         Route::get('/', [FeedbackController::class, 'index'])->name('feedbacks.index');

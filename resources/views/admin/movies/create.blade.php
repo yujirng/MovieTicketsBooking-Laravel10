@@ -12,8 +12,7 @@
             <select class="form-control" id="director_id" name="director_id">
                 @foreach ($directors as $director)
                     <option value="{{ $director->id }}" {{ old('director_id') == $director->id ? 'selected' : '' }}>
-                    </option>">
-                    {{ $director->name }}
+                        {{ $director->name }}
                     </option>
                 @endforeach
             </select>
@@ -56,8 +55,7 @@
         </div>
         <div class="form-group">
             <label for="description">Description:</label>
-            <textarea class="form-control" id="description" name="description" rows="3" required>
-                {{ old('description') }}</textarea>
+            <textarea class="form-control" id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
         </div>
         <div class="form-group">
             <label for="image">Image:</label>
@@ -66,12 +64,10 @@
         <div class="form-group">
             <label for="cens">Movie Cens:</label>
             <select class="form-control" id="cens" name="cens" required>
-                <select class="form-control" id="cens" name="cens" required>
-                    @foreach ($censorshipOptions as $option)
-                        <option value="{{ $option }}" {{ old('cens') == $option ? 'selected' : '' }}>
-                            {{ $option }}</option>
-                    @endforeach
-                </select>
+                @foreach ($censorshipOptions as $option)
+                    <option value="{{ $option }}" {{ old('cens') == $option ? 'selected' : '' }}>
+                        {{ $option }}</option>
+                @endforeach
             </select>
         </div>
         <div class="form-group">

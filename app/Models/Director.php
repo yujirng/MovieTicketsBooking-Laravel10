@@ -15,7 +15,5 @@ class Director extends Model
         'birthdate',
         'nationality',
         'image',
-        'created_at',
-        'updated_at'
     ];
 }

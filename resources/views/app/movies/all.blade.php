@@ -109,7 +109,7 @@
                         $('.filter_data').html(data);
                     },
                     error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
+                        // console.log(xhr.responseText);
                     }
                 });
             }

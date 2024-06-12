@@ -41,6 +41,8 @@
     <!-- ./wrapper -->
 
     @include('layouts.admin.footer')
+
+    @yield('scripts')
 </body>
 
 </html>
